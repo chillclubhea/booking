@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>服務項目 | 舒壓按摩</title>
-    <meta name="description" content="舒壓按摩提供多種專業按摩服務：瑞典式按摩、深層組織按摩、熱石按摩等">
+    <title>服務項目 | Chill Club 痛症治療</title>
+    <meta name="description" content="Chill Club 提供專業痛症治療服務：皇牌痛症評估、中式推拿、筋膜放鬆、運動復康等全方位解決方案">
     
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/responsive.css">
@@ -59,6 +59,7 @@
             transition: var(--transition);
             opacity: 0;
             transform: translateY(30px);
+            position: relative;
         }
         
         .service-detail-card.visible {
@@ -69,6 +70,19 @@
         .service-detail-card:hover {
             box-shadow: var(--shadow-hover);
             border-color: var(--accent);
+        }
+        
+        .service-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: var(--accent);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            z-index: 1;
         }
         
         .service-header {
@@ -108,15 +122,31 @@
             margin-bottom: 10px;
         }
         
+        .service-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        
         .service-price-tag {
             background: var(--hover-bg);
             color: var(--accent);
-            padding: 10px 25px;
+            padding: 12px 30px;
             border-radius: 50px;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: 700;
             display: inline-block;
             transition: var(--transition);
+            margin-bottom: 10px;
+        }
+        
+        .service-price-tag small {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            display: block;
+            margin-top: 5px;
         }
         
         .service-detail-card:hover .service-price-tag {
@@ -135,7 +165,11 @@
             font-size: 1.1rem;
         }
         
-        .benefits-section h3 {
+        .features-section {
+            margin: 30px 0;
+        }
+        
+        .features-section h3 {
             color: var(--text-primary);
             margin-bottom: 25px;
             font-size: 1.5rem;
@@ -144,34 +178,90 @@
             gap: 10px;
         }
         
-        .benefits-section h3 i {
+        .features-section h3 i {
             color: var(--accent);
         }
         
-        .benefits-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+        .features-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
         }
         
-        .benefit-item {
+        .features-list li {
+            padding: 12px 0;
+            padding-left: 35px;
+            position: relative;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            border-bottom: 1px dashed var(--border-color);
+        }
+        
+        .features-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .features-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .note-box {
+            background-color: var(--hover-bg);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 30px 0;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .note-box p {
+            margin: 0;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        
+        .service-detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .detail-item {
             background: var(--background);
             padding: 25px;
-            border-radius: 8px;
+            border-radius: 10px;
             border: 1px solid var(--border-color);
             transition: var(--transition);
         }
         
-        .benefit-item:hover {
+        .detail-item:hover {
             border-color: var(--accent);
-            transform: translateY(-3px);
+            transform: translateY(-5px);
         }
         
-        .benefit-item i {
+        .detail-item i {
             color: var(--accent);
-            font-size: 1.5rem;
+            font-size: 2rem;
             margin-bottom: 15px;
             display: block;
+        }
+        
+        .detail-item h4 {
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .detail-item p {
+            color: var(--text-secondary);
+            margin: 0;
+            font-size: 0.95rem;
+            line-height: 1.6;
         }
         
         .service-cta {
@@ -200,7 +290,12 @@
                 font-size: 2rem;
             }
             
-            .benefits-grid {
+            .service-price-tag {
+                font-size: 1.5rem;
+                padding: 10px 20px;
+            }
+            
+            .service-detail-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -214,8 +309,8 @@
                     <i class="fas fa-spa"></i>
                 </div>
                 <div class="logo-text">
-                    <span class="main">舒壓按摩</span>
-                    <span class="sub">專業按摩治療</span>
+                    <span class="main">Chill Club</span>
+                    <span class="sub">專業痛症治療</span>
                 </div>
             </a>
             
@@ -241,160 +336,335 @@
 
     <section class="services-hero fade-in">
         <div class="container">
-            <h1>服務項目</h1>
-            <p>專業按摩治療，為您量身定制</p>
+            <h1>專業痛症治療服務</h1>
+            <p>全方位解決方案，從根源處理痛症問題</p>
         </div>
     </section>
 
     <section class="services-intro fade-in">
         <div class="container">
-            <p>我們提供多種專業按摩服務，每種服務都由經驗豐富的治療師執行，使用天然有機的按摩產品，確保您獲得最佳的放鬆和治療效果。</p>
+            <p>我們提供專業的痛症評估、治療及復康服務，結合中醫推拿、運動復康和現代治療技術，為每位客戶量身定制專屬治療方案，從根源解決您的痛症問題。</p>
         </div>
     </section>
 
     <section class="services-detail">
         <div class="container">
-            <!-- 瑞典式按摩 -->
-            <div class="service-detail-card fade-in" id="swedish">
+            <!-- 新客優惠：60分鐘痛症治療 -->
+            <div class="service-detail-card fade-in" id="new-customer-pain">
+                <div class="service-badge">新客專享</div>
                 <div class="service-header">
                     <div class="service-icon-large">
-                        <i class="fas fa-hands"></i>
+                        <i class="fas fa-stethoscope"></i>
                     </div>
                     <div class="service-title">
-                        <h2>瑞典式按摩</h2>
-                        <div class="service-price-tag">NT$ 1,200 / 60分鐘</div>
+                        <h2>新客優惠｜60分鐘痛症治療</h2>
+                        <div class="service-price-tag">HK$ 418
+                            <small>60分鐘專業痛症評估及治療</small>
+                        </div>
                     </div>
                 </div>
                 
                 <div class="service-content">
-                    <p>瑞典式按摩是最經典、最常見的按摩類型，專注於放鬆表層肌肉，改善血液循環，促進身心放鬆。我們的治療師使用長而平滑的按摩手法，從四肢向心臟方向按摩，幫助排出體內毒素，緩解肌肉緊張。</p>
-                    <p>這種按摩特別適合初次體驗按摩的客戶，或是需要日常放鬆的上班族。透過瑞典式按摩，您可以感受到明顯的壓力釋放和身心舒暢。</p>
-                </div>
-                
-                <div class="benefits-section">
-                    <h3><i class="fas fa-check-circle"></i> 主要好處</h3>
-                    <div class="benefits-grid">
-                        <div class="benefit-item">
-                            <i class="fas fa-heartbeat"></i>
-                            <h4>改善血液循環</h4>
-                            <p>促進血液和淋巴流動，幫助身體排毒</p>
-                        </div>
-                        <div class="benefit-item">
-                            <i class="fas fa-bed"></i>
-                            <h4>深度放鬆</h4>
-                            <p>緩解肌肉緊張，改善睡眠質量</p>
-                        </div>
-                        <div class="benefit-item">
-                            <i class="fas fa-smile"></i>
-                            <h4>壓力釋放</h4>
-                            <p>降低壓力荷爾蒙，提升情緒</p>
-                        </div>
-                        <div class="benefit-item">
-                            <i class="fas fa-running"></i>
-                            <h4>靈活性提升</h4>
-                            <p>增加關節活動範圍，改善姿勢</p>
-                        </div>
+                    <p>專為新客戶設計的痛症治療體驗，由專業治療師進行全面的痛症評估，找出問題根源，並提供針對性的治療方案。</p>
+                    <p>我們的治療師會詳細解釋您的痛症成因，制定「斷尾」思路，結合客製化痛症手法，並提供適合的運動和飲食建議，確保您獲得長遠的改善。</p>
+                    
+                    <div class="features-section">
+                        <h3><i class="fas fa-clipboard-check"></i> 服務內容</h3>
+                        <ul class="features-list">
+                            <li>60分鐘皇牌痛症評估及專業手法</li>
+                            <li>詳細解釋痛症成因及問題根源</li>
+                            <li>制定痛症「斷尾」思路及治療計劃</li>
+                            <li>客製化痛症手法治療</li>
+                            <li>專業運動建議（如適用）</li>
+                            <li>飲食及生活習慣建議（如適用）</li>
+                        </ul>
                     </div>
-                </div>
-                
-                <div class="service-cta">
-                    <a href="./booking.html" class="btn btn-large">預約此服務</a>
-                </div>
-            </div>
-            
-            <!-- 深層組織按摩 -->
-            <div class="service-detail-card fade-in" id="deep-tissue">
-                <div class="service-header">
-                    <div class="service-icon-large">
-                        <i class="fas fa-bone"></i>
+                    
+                    <div class="note-box">
+                        <p><strong>注意：</strong> 可根據個人需求加選額外項目（需額外收費）</p>
                     </div>
-                    <div class="service-title">
-                        <h2>深層組織按摩</h2>
-                        <div class="service-price-tag">NT$ 1,800 / 90分鐘</div>
-                    </div>
-                </div>
-                
-                <div class="service-content">
-                    <p>深層組織按摩針對深層肌肉組織和筋膜，使用緩慢而有力的手法，專注於緩解慢性肌肉緊張和疼痛。這種按摩特別適合有特定問題區域、運動員或長期姿勢不良的人士。</p>
-                    <p>我們的治療師會根據您的需求，針對特定的肌肉群進行深度按摩，幫助分解疤痕組織，緩解慢性疼痛，改善關節活動範圍。</p>
-                </div>
-                
-                <div class="benefits-section">
-                    <h3><i class="fas fa-check-circle"></i> 主要好處</h3>
-                    <div class="benefits-grid">
-                        <div class="benefit-item">
-                            <i class="fas fa-user-injured"></i>
-                            <h4>緩解慢性疼痛</h4>
-                            <p>針對肩頸、背部等慢性疼痛區域</p>
+                    
+                    <div class="service-detail-grid">
+                        <div class="detail-item">
+                            <i class="fas fa-search"></i>
+                            <h4>專業評估</h4>
+                            <p>詳細評估痛症來源，找出問題核心</p>
                         </div>
-                        <div class="benefit-item">
-                            <i class="fas fa-hands-helping"></i>
-                            <h4>改善活動能力</h4>
-                            <p>增加關節活動範圍，減少僵硬</p>
+                        <div class="detail-item">
+                            <i class="fas fa-hands"></i>
+                            <h4>客製化治療</h4>
+                            <p>根據評估結果制定專屬治療方案</p>
                         </div>
-                        <div class="benefit-item">
+                        <div class="detail-item">
                             <i class="fas fa-dumbbell"></i>
-                            <h4>運動恢復</h4>
-                            <p>幫助肌肉恢復，減少運動傷害</p>
+                            <h4>運動指導</h4>
+                            <p>提供針對性的運動復康指導</p>
                         </div>
-                        <div class="benefit-item">
-                            <i class="fas fa-user-md"></i>
-                            <h4>針對性治療</h4>
-                            <p>針對特定問題區域進行深度治療</p>
+                        <div class="detail-item">
+                            <i class="fas fa-utensils"></i>
+                            <h4>飲食建議</h4>
+                            <p>配合飲食調整，促進身體恢復</p>
                         </div>
                     </div>
                 </div>
                 
                 <div class="service-cta">
-                    <a href="./booking.html" class="btn btn-large">預約此服務</a>
+                    <a href="./booking.html" class="btn btn-large">立即預約此服務</a>
                 </div>
             </div>
             
-            <!-- 熱石按摩 -->
-            <div class="service-detail-card fade-in" id="hot-stone">
+            <!-- PLAN-A1：60分鐘純按摩 -->
+            <div class="service-detail-card fade-in" id="plan-a1">
+                <div class="service-badge">熱門選擇</div>
                 <div class="service-header">
                     <div class="service-icon-large">
-                        <i class="fas fa-leaf"></i>
+                        <i class="fas fa-star"></i>
                     </div>
                     <div class="service-title">
-                        <h2>熱石按摩</h2>
-                        <div class="service-price-tag">NT$ 2,200 / 90分鐘</div>
+                        <h2>PLAN-A1｜60分鐘純按摩</h2>
+                        <div class="service-price-tag">HK$ 398
+                            <small>基礎放鬆按摩方案</small>
+                        </div>
                     </div>
                 </div>
                 
                 <div class="service-content">
-                    <p>熱石按摩使用加熱的玄武岩進行按摩，石頭的熱量能夠深入肌肉組織，促進深度放鬆和血液循環。溫暖的觸感特別適合肌肉僵硬、壓力大或怕冷的客戶。</p>
-                    <p>我們的治療師會將溫熱的石頭放在身體的特定穴位上，然後使用石頭進行按摩。這種獨特的按摩方式結合了熱療和按摩的雙重好處，能帶來極致的放鬆體驗。</p>
-                </div>
-                
-                <div class="benefits-section">
-                    <h3><i class="fas fa-check-circle"></i> 主要好處</h3>
-                    <div class="benefits-grid">
-                        <div class="benefit-item">
-                            <i class="fas fa-thermometer-half"></i>
-                            <h4>深度放鬆</h4>
-                            <p>熱石溫暖肌肉，達到深度放鬆</p>
+                    <p>適合日常保養與壓力釋放的基礎按摩方案，專注於放鬆主要肌肉群，緩解日常疲勞和緊張。</p>
+                    <p>我們的治療師會使用專業的按摩手法，針對頭肩頸、背部等容易緊張的區域進行重點放鬆，幫助您恢復身心平衡。</p>
+                    
+                    <div class="features-section">
+                        <h3><i class="fas fa-clock"></i> 時間分配</h3>
+                        <ul class="features-list">
+                            <li>15分鐘頭肩頸深度按摩</li>
+                            <li>15分鐘背部重點放鬆</li>
+                            <li>15分鐘筋膜放鬆按摩</li>
+                            <li>15分鐘專業伸展運動</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="note-box">
+                        <p><strong>備註：</strong> 可根據個人喜好加選額外項目（非必須，需額外收費）</p>
+                    </div>
+                    
+                    <div class="service-detail-grid">
+                        <div class="detail-item">
+                            <i class="fas fa-head-side-massage"></i>
+                            <h4>頭肩頸放鬆</h4>
+                            <p>針對辦公族常見的肩頸緊繃問題</p>
                         </div>
-                        <div class="benefit-item">
-                            <i class="fas fa-tint"></i>
-                            <h4>促進循環</h4>
-                            <p>熱力促進血液循環，幫助排毒</p>
+                        <div class="detail-item">
+                            <i class="fas fa-spine"></i>
+                            <h4>背部舒緩</h4>
+                            <p>緩解背部肌肉疲勞和僵硬</p>
                         </div>
-                        <div class="benefit-item">
-                            <i class="fas fa-moon"></i>
-                            <h4>改善睡眠</h4>
-                            <p>深度放鬆有助於改善失眠問題</p>
+                        <div class="detail-item">
+                            <i class="fas fa-layer-group"></i>
+                            <h4>筋膜放鬆</h4>
+                            <p>深度放鬆筋膜，改善肌肉彈性</p>
                         </div>
-                        <div class="benefit-item">
-                            <i class="fas fa-wind"></i>
-                            <h4>壓力釋放</h4>
-                            <p>溫暖的觸感有效釋放身心壓力</p>
+                        <div class="detail-item">
+                            <i class="fas fa-person-walking"></i>
+                            <h4>專業伸展</h4>
+                            <p>指導正確伸展動作，預防傷害</p>
                         </div>
                     </div>
                 </div>
                 
                 <div class="service-cta">
-                    <a href="./booking.html" class="btn btn-large">預約此服務</a>
+                    <a href="./booking.html" class="btn btn-large">立即預約此服務</a>
+                </div>
+            </div>
+            
+            <!-- PLAN-B3：90分鐘純痛症+運動復康 -->
+            <div class="service-detail-card fade-in" id="plan-b3">
+                <div class="service-badge">專業復康</div>
+                <div class="service-header">
+                    <div class="service-icon-large">
+                        <i class="fas fa-running"></i>
+                    </div>
+                    <div class="service-title">
+                        <h2>PLAN-B3｜90分鐘純痛症+運動復康</h2>
+                        <div class="service-price-tag">HK$ 768
+                            <small>完整痛症治療方案</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="service-content">
+                    <p>專業的痛症治療結合運動復康訓練方案，適合有長期痛症問題或運動傷害的客戶。透過手法治療結合運動訓練，從根源解決痛症問題。</p>
+                    <p>我們的治療師不僅處理當前的疼痛症狀，更會教導您正確的運動方式和姿勢調整，預防痛症復發。</p>
+                    
+                    <div class="features-section">
+                        <h3><i class="fas fa-clipboard-list"></i> 完整服務內容</h3>
+                        <ul class="features-list">
+                            <li>30分鐘皇牌痛症專業手法治療</li>
+                            <li>15分鐘姿勢評估與調整指導</li>
+                            <li>30分鐘個性化運動復康訓練</li>
+                            <li>痛症評估及後期跟進計劃</li>
+                            <li>日常保養及預防復發指導</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="note-box">
+                        <p><strong>特點：</strong> 此方案特別適合長期痛症患者、運動員或有特定痛症問題的人士</p>
+                    </div>
+                    
+                    <div class="service-detail-grid">
+                        <div class="detail-item">
+                            <i class="fas fa-user-md"></i>
+                            <h4>專業手法</h4>
+                            <p>針對特定痛點的深度治療手法</p>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-user-check"></i>
+                            <h4>姿勢矯正</h4>
+                            <p>評估並改善不良姿勢習慣</p>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-dumbbell"></i>
+                            <h4>運動復康</h4>
+                            <p>指導正確的運動恢復訓練</p>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-calendar-check"></i>
+                            <h4>長期跟進</h4>
+                            <p>提供後續跟進及調整建議</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="service-cta">
+                    <a href="./booking.html" class="btn btn-large">立即預約此服務</a>
+                </div>
+            </div>
+            
+            <!-- PLAN-C：90分鐘頂級套餐 -->
+            <div class="service-detail-card fade-in" id="plan-c">
+                <div class="service-badge">頂級套餐</div>
+                <div class="service-header">
+                    <div class="service-icon-large">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <div class="service-title">
+                        <h2>PLAN-C｜90分鐘頂級套餐</h2>
+                        <div class="service-subtitle">頭部睡眠按摩+痛症+按摩</div>
+                        <div class="service-price-tag">HK$ 658
+                            <small>初體驗優惠價 HK$ 808</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="service-content">
+                    <p>全方位的頂級治療方案，結合痛症治療、放鬆按摩及獨特的睡眠按摩，為您提供極致的放鬆體驗和痛症緩解效果。</p>
+                    <p>特別加入的睡眠按摩環節，能有效改善失眠問題，幫助您獲得深度放鬆和高質量睡眠。</p>
+                    
+                    <div class="features-section">
+                        <h3><i class="fas fa-spa"></i> 完整療程流程</h3>
+                        <ul class="features-list">
+                            <li>10分鐘詳細痛症評估與諮詢</li>
+                            <li>50分鐘皇牌痛症專業手法治療</li>
+                            <li>15分鐘筋膜放鬆深度按摩</li>
+                            <li>15分鐘專業伸展運動指導</li>
+                            <li>⭐️ 15分鐘獨家睡眠按摩 ⭐️</li>
+                            <li>運動及復康教學與指導</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="service-detail-grid">
+                        <div class="detail-item">
+                            <i class="fas fa-bed"></i>
+                            <h4>睡眠按摩</h4>
+                            <p>獨家頭部按摩技術，促進深度睡眠</p>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-brain"></i>
+                            <h4>頭部放鬆</h4>
+                            <p>緩解頭部緊張，改善頭痛問題</p>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-hands-helping"></i>
+                            <h4>痛症治療</h4>
+                            <p>專業手法解決各類痛症問題</p>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-graduation-cap"></i>
+                            <h4>復康教學</h4>
+                            <p>教導日常保養及自我復康技巧</p>
+                        </div>
+                    </div>
+                    
+                    <div class="note-box">
+                        <p><strong>特別推薦：</strong> 適合壓力大、失眠、長期痛症及追求高品質放鬆體驗的客戶</p>
+                    </div>
+                </div>
+                
+                <div class="service-cta">
+                    <a href="./booking.html" class="btn btn-large">立即預約此服務</a>
+                </div>
+            </div>
+            
+            <!-- PLAN-A3：105分鐘純按摩 -->
+            <div class="service-detail-card fade-in" id="plan-a3">
+                <div class="service-badge">至尊享受</div>
+                <div class="service-header">
+                    <div class="service-icon-large">
+                        <i class="fas fa-spa"></i>
+                    </div>
+                    <div class="service-title">
+                        <h2>PLAN-A3｜105分鐘純按摩</h2>
+                        <div class="service-price-tag">HK$ 658
+                            <small>長時間深度放鬆體驗</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="service-content">
+                    <p>長時間的深度按摩體驗，涵蓋全身各個部位，從頭到腳徹底放鬆每一寸肌肉。特別加入的睡眠按摩環節，讓您在療程結束後獲得極致的放鬆感。</p>
+                    <p>適合長時間工作、壓力大或需要深度放鬆的客戶，讓您暫時遠離繁忙生活，享受專屬於您的寧靜時光。</p>
+                    
+                    <div class="features-section">
+                        <h3><i class="fas fa-list-ol"></i> 完整時間分配</h3>
+                        <ul class="features-list">
+                            <li>15分鐘頭肩頸深度按摩</li>
+                            <li>15分鐘背部重點放鬆</li>
+                            <li>15分鐘腰腹部舒緩按摩</li>
+                            <li>15分鐘腿部肌肉放鬆</li>
+                            <li>15分鐘手部及手臂按摩</li>
+                            <li>15分鐘專業伸展運動</li>
+                            <li>15分鐘睡眠按摩（重點環節）</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="note-box">
+                        <p><strong>備註：</strong> 可根據個人喜好加選額外項目（非必須，需額外收費）</p>
+                    </div>
+                    
+                    <div class="service-detail-grid">
+                        <div class="detail-item">
+                            <i class="fas fa-user-clock"></i>
+                            <h4>長時間放鬆</h4>
+                            <p>充足的時間讓肌肉徹底放鬆</p>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-allergies"></i>
+                            <h4>全身照顧</h4>
+                            <p>從頭到腳的完整按摩體驗</p>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-moon"></i>
+                            <h4>睡眠改善</h4>
+                            <p>特別按摩手法促進深度睡眠</p>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-water"></i>
+                            <h4>壓力釋放</h4>
+                            <p>徹底釋放身心累積的壓力</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="service-cta">
+                    <a href="./booking.html" class="btn btn-large">立即預約此服務</a>
                 </div>
             </div>
         </div>
@@ -404,8 +674,8 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-col fade-in">
-                    <h3>舒壓按摩</h3>
-                    <p>專業按摩治療服務。</p>
+                    <h3>Chill Club</h3>
+                    <p>專業痛症治療及按摩服務。</p>
                 </div>
                 <div class="footer-col fade-in">
                     <h3>快速連結</h3>
@@ -421,12 +691,19 @@
                         <div class="contact-icon">
                             <i class="fas fa-phone"></i>
                         </div>
-                        <p>(02) 1234-5678</p>
+                        <p>(852) 1234-5678</p>
+                    </div>
+                    <div class="contact-info">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <p>香港九龍旺角彌敦道123號</p>
                     </div>
                 </div>
             </div>
             <div class="copyright">
-                <p>&copy; 2023 舒壓按摩</p>
+                <p>&copy; 2023 Chill Club 專業痛症治療服務</p>
+                <p>所有價格為港幣 HKD</p>
             </div>
         </div>
     </footer>
