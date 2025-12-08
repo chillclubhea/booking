@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>備用預約表單 | 舒壓按摩</title>
+    
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* 簡約黑色風格，類似 myfreetime.io */
+        :root {
+            --black: #000000;
+            --white: #FFFFFF;
+            --gray-light: #F5F5F5;
+            --gray-dark: #333333;
+        }
+        
+        .backup-booking {
+            background-color: var(--white);
+            color: var(--gray-dark);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .backup-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .backup-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--black);
+        }
+        
+        .backup-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .booking-form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--black);
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--black);
+        }
+        
+        .service-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .service-option {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .service-option.selected {
+            border-color: var(--black);
+            background-color: #f9f9f9;
+        }
+        
+        .service-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--black);
+        }
+        
+        .service-price {
+            color: var(--black);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background-color: var(--black);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background-color: #333;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            color: var(--black);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .booking-form-container {
+                padding: 25px 20px;
+            }
+            
+            .backup-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body class="backup-booking">
+    <div class="container">
+        <div class="backup-header">
+            <h1>預約按摩服務</h1>
+            <p>填寫以下表單預約您的專屬按摩體驗</p>
+        </div>
+        
+        <div class="booking-form-container">
+            <form id="backupBookingForm">
+                <div class="form-group">
+                    <label class="form-label">姓名 *</label>
+                    <input type="text" class="form-input" placeholder="請輸入您的姓名" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">電話 *</label>
+                    <input type="tel" class="form-input" placeholder="請輸入您的手機號碼" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">電子郵件</label>
+                    <input type="email" class="form-input" placeholder="請輸入您的電子郵件">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">選擇服務 *</label>
+                    <div class="service-options">
+                        <div class="service-option" onclick="selectService(this)">
+                            <div class="service-name">瑞典式按摩</div>
+                            <div class="service-price">NT$1,200</div>
+                            <div>60分鐘</div>
+                        </div>
+                        <div class="service-option" onclick="selectService(this)">
+                            <div class="service-name">深層組織按摩</div>
+                            <div class="service-price">NT$1,800</div>
+                            <div>90分鐘</div>
+                        </div>
+                        <div class="service-option" onclick="selectService(this)">
+                            <div class="service-name">熱石按摩</div>
+                            <div class="service-price">NT$2,200</div>
+                            <div>90分鐘</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">預約日期 *</label>
+                    <input type="date" class="form-input" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">預約時間 *</label>
+                    <select class="form-input" required>
+                        <option value="">請選擇時間</option>
+                        <option>10:00</option>
+                        <option>11:00</option>
+                        <option>14:00</option>
+                        <option>15:00</option>
+                        <option>16:00</option>
+                        <option>17:00</option>
+                        <option>19:00</option>
+                        <option>20:00</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">備註</label>
+                    <textarea class="form-input" rows="4" placeholder="請告訴我們您的特殊需求或注意事項..."></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn">提交預約</button>
+            </form>
+            
+            <a href="./booking.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> 返回主預約頁面
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // 選擇服務
+        function selectService(element) {
+            document.querySelectorAll('.service-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            element.classList.add('selected');
+        }
+        
+        // 表單提交
+        document.getElementById('backupBookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('預約已提交！我們將在24小時內與您聯繫確認。');
+            window.location.href = './index.html';
+        });
+        
+        // 設置今天為最小日期
+        const today = new Date().toISOString().split('T')[0];
+        document.querySelector('input[type="date"]').setAttribute('min', today);
+    </script>
+</body>
+</html>
