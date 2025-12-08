@@ -3,250 +3,353 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>備用預約表單 | 舒壓按摩</title>
+    <title>預約按摩 | 舒壓按摩</title>
+    <meta name="description" content="線上預約專業按摩服務">
     
+    <!-- 使用我們現有的樣式保持一致性 -->
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/responsive.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
     
     <style>
-        /* 簡約黑色風格，類似 myfreetime.io */
-        :root {
-            --black: #000000;
-            --white: #FFFFFF;
-            --gray-light: #F5F5F5;
-            --gray-dark: #333333;
+        /* 嵌入頁面專用樣式 */
+        .booking-container {
+            padding: 0;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
         
-        .backup-booking {
-            background-color: var(--white);
-            color: var(--gray-dark);
-            min-height: 100vh;
-            padding: 20px;
+        /* 導航列 */
+        .booking-header {
+            background-color: #000;
+            color: white;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
         
-        .backup-header {
-            text-align: center;
-            margin-bottom: 40px;
+        .booking-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
         }
         
-        .backup-header h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: var(--black);
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
         }
         
-        .backup-header p {
-            color: #666;
-            font-size: 1.1rem;
+        .logo i {
+            margin-right: 10px;
+            font-size: 1.8rem;
         }
         
-        .booking-form-container {
-            max-width: 600px;
-            margin: 0 auto;
-            background-color: var(--white);
-            border: 1px solid #e0e0e0;
-            border-radius: 12px;
-            padding: 40px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        .nav-controls {
+            display: flex;
+            gap: 20px;
+            align-items: center;
         }
         
-        .form-group {
-            margin-bottom: 25px;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--black);
-        }
-        
-        .form-input {
-            width: 100%;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s;
-        }
-        
-        .form-input:focus {
-            outline: none;
-            border-color: var(--black);
-        }
-        
-        .service-options {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-        
-        .service-option {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
+        .back-btn {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 5px;
             cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             transition: all 0.3s;
         }
         
-        .service-option.selected {
-            border-color: var(--black);
-            background-color: #f9f9f9;
+        .back-btn:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.5);
         }
         
-        .service-name {
-            font-weight: 600;
-            margin-bottom: 5px;
-            color: var(--black);
+        /* iframe 容器 */
+        .iframe-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
         }
         
-        .service-price {
-            color: var(--black);
-            font-weight: 700;
-            font-size: 1.2rem;
-        }
-        
-        .submit-btn {
+        .website-frame {
             width: 100%;
-            padding: 16px;
-            background-color: var(--black);
-            color: var(--white);
+            height: 100%;
             border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: 600;
+            display: block;
+        }
+        
+        /* 加載指示器 */
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            transition: opacity 0.5s;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(0,0,0,0.1);
+            border-radius: 50%;
+            border-top-color: #000;
+            animation: spin 1s ease-in-out infinite;
+            margin-bottom: 20px;
+        }
+        
+        .loading-text {
+            color: #333;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 錯誤訊息 */
+        .error-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 90%;
+            z-index: 20;
+        }
+        
+        .error-message h3 {
+            color: #e74c3c;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .error-message p {
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .refresh-btn {
+            background: #000;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        .submit-btn:hover {
-            background-color: #333;
-        }
-        
-        .back-link {
-            display: inline-block;
-            margin-top: 30px;
-            color: var(--black);
-            text-decoration: none;
             font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.3s;
         }
         
-        .back-link:hover {
-            text-decoration: underline;
+        .refresh-btn:hover {
+            background: #333;
         }
         
+        /* 響應式調整 */
         @media (max-width: 768px) {
-            .booking-form-container {
-                padding: 25px 20px;
+            .booking-header .container {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
             }
             
-            .backup-header h1 {
-                font-size: 2rem;
+            .nav-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .back-btn {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .error-message {
+                padding: 30px 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 1.3rem;
+            }
+            
+            .logo i {
+                font-size: 1.5rem;
+            }
+            
+            .error-message h3 {
+                font-size: 1.3rem;
+            }
+            
+            .loading-text {
+                font-size: 1rem;
             }
         }
     </style>
 </head>
-<body class="backup-booking">
-    <div class="container">
-        <div class="backup-header">
-            <h1>預約按摩服務</h1>
-            <p>填寫以下表單預約您的專屬按摩體驗</p>
+<body class="booking-container">
+    <!-- 導航列 -->
+    <header class="booking-header">
+        <div class="container">
+            <a href="./index.html" class="logo">
+                <i class="fas fa-spa"></i>
+                <span>舒壓按摩</span>
+            </a>
+            <div class="nav-controls">
+                <a href="./index.html" class="back-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    返回首頁
+                </a>
+                <a href="./services.html" class="back-btn">
+                    <i class="fas fa-spa"></i>
+                    服務項目
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- iframe 嵌入外部網站 -->
+    <div class="iframe-container">
+        <!-- 加載指示器 -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">正在載入預約系統...</div>
         </div>
         
-        <div class="booking-form-container">
-            <form id="backupBookingForm">
-                <div class="form-group">
-                    <label class="form-label">姓名 *</label>
-                    <input type="text" class="form-input" placeholder="請輸入您的姓名" required>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">電話 *</label>
-                    <input type="tel" class="form-input" placeholder="請輸入您的手機號碼" required>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">電子郵件</label>
-                    <input type="email" class="form-input" placeholder="請輸入您的電子郵件">
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">選擇服務 *</label>
-                    <div class="service-options">
-                        <div class="service-option" onclick="selectService(this)">
-                            <div class="service-name">瑞典式按摩</div>
-                            <div class="service-price">NT$1,200</div>
-                            <div>60分鐘</div>
-                        </div>
-                        <div class="service-option" onclick="selectService(this)">
-                            <div class="service-name">深層組織按摩</div>
-                            <div class="service-price">NT$1,800</div>
-                            <div>90分鐘</div>
-                        </div>
-                        <div class="service-option" onclick="selectService(this)">
-                            <div class="service-name">熱石按摩</div>
-                            <div class="service-price">NT$2,200</div>
-                            <div>90分鐘</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">預約日期 *</label>
-                    <input type="date" class="form-input" required>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">預約時間 *</label>
-                    <select class="form-input" required>
-                        <option value="">請選擇時間</option>
-                        <option>10:00</option>
-                        <option>11:00</option>
-                        <option>14:00</option>
-                        <option>15:00</option>
-                        <option>16:00</option>
-                        <option>17:00</option>
-                        <option>19:00</option>
-                        <option>20:00</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">備註</label>
-                    <textarea class="form-input" rows="4" placeholder="請告訴我們您的特殊需求或注意事項..."></textarea>
-                </div>
-                
-                <button type="submit" class="submit-btn">提交預約</button>
-            </form>
-            
-            <a href="./booking.html" class="back-link">
-                <i class="fas fa-arrow-left"></i> 返回主預約頁面
-            </a>
+        <!-- 錯誤訊息 (預設隱藏) -->
+        <div class="error-message" id="errorMessage" style="display: none;">
+            <h3><i class="fas fa-exclamation-triangle"></i> 無法載入預約頁面</h3>
+            <p>預約系統暫時無法使用，可能是以下原因：</p>
+            <ul style="text-align: left; margin: 15px 0; padding-left: 20px;">
+                <li>網路連線不穩定</li>
+                <li>預約系統暫時維護中</li>
+                <li>瀏覽器安全性設定限制</li>
+            </ul>
+            <p>請嘗試以下解決方法：</p>
+            <button class="refresh-btn" onclick="refreshIframe()">
+                <i class="fas fa-redo"></i>
+                重新載入頁面
+            </button>
+            <p style="margin-top: 20px; font-size: 0.9rem;">
+                或直接聯繫我們：<br>
+                <i class="fas fa-phone"></i> (02) 1234-5678<br>
+                <i class="fas fa-envelope"></i> info@massage.com
+            </p>
         </div>
+        
+        <!-- 嵌入的網站 -->
+        <iframe 
+            class="website-frame" 
+            id="bookingFrame"
+            src="https://myfreetime.io/shop/chillclubonmore?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGnysL0YkSDEu8Tcd0vcnMoqi5iwbjgpmjCV2W73Z-BAVRM8YaATw8uebOTtmU_aem_sWaDqukas2q-Yd-kI0CgxQ"
+            title="按摩預約系統"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+        </iframe>
     </div>
 
     <script>
-        // 選擇服務
-        function selectService(element) {
-            document.querySelectorAll('.service-option').forEach(opt => {
-                opt.classList.remove('selected');
-            });
-            element.classList.add('selected');
-        }
+        // 控制 iframe 加載
+        const bookingFrame = document.getElementById('bookingFrame');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const errorMessage = document.getElementById('errorMessage');
         
-        // 表單提交
-        document.getElementById('backupBookingForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('預約已提交！我們將在24小時內與您聯繫確認。');
-            window.location.href = './index.html';
+        // iframe 加載完成時隱藏 loading
+        bookingFrame.addEventListener('load', function() {
+            setTimeout(() => {
+                loadingOverlay.style.opacity = '0';
+                setTimeout(() => {
+                    loadingOverlay.style.display = 'none';
+                }, 500);
+            }, 1000);
         });
         
-        // 設置今天為最小日期
-        const today = new Date().toISOString().split('T')[0];
-        document.querySelector('input[type="date"]').setAttribute('min', today);
+        // iframe 加載錯誤時顯示錯誤訊息
+        bookingFrame.addEventListener('error', function() {
+            loadingOverlay.style.display = 'none';
+            errorMessage.style.display = 'block';
+        });
+        
+        // 重新載入 iframe
+        function refreshIframe() {
+            errorMessage.style.display = 'none';
+            loadingOverlay.style.display = 'flex';
+            loadingOverlay.style.opacity = '1';
+            bookingFrame.src = bookingFrame.src + '&t=' + new Date().getTime(); // 添加時間戳避免緩存
+        }
+        
+        // 檢測網路連線
+        window.addEventListener('online', function() {
+            if (errorMessage.style.display === 'block') {
+                refreshIframe();
+            }
+        });
+        
+        window.addEventListener('offline', function() {
+            loadingOverlay.style.display = 'none';
+            errorMessage.style.display = 'block';
+        });
+        
+        // 初始檢查網路狀態
+        if (!navigator.onLine) {
+            loadingOverlay.style.display = 'none';
+            errorMessage.style.display = 'block';
+        }
+        
+        // 安全檢查：如果 iframe 被阻止，顯示替代內容
+        setTimeout(() => {
+            if (bookingFrame.contentWindow === null || bookingFrame.contentWindow.location.href === 'about:blank') {
+                loadingOverlay.style.display = 'none';
+                errorMessage.style.display = 'block';
+                errorMessage.innerHTML = `
+                    <h3><i class="fas fa-shield-alt"></i> 安全性限制</h3>
+                    <p>由於瀏覽器安全性設定，無法直接載入外部預約系統。</p>
+                    <p>請點擊以下連結在新視窗中開啟預約頁面：</p>
+                    <a href="https://myfreetime.io/shop/chillclubonmore" 
+                       target="_blank" 
+                       class="refresh-btn"
+                       style="text-decoration: none; display: inline-block; margin-top: 15px;">
+                        <i class="fas fa-external-link-alt"></i>
+                        在新視窗中開啟預約系統
+                    </a>
+                    <p style="margin-top: 20px; font-size: 0.9rem;">
+                        或使用我們的備用預約系統：<br>
+                        <a href="./booking-backup.html" style="color: #000; text-decoration: underline;">
+                            本地預約表單
+                        </a>
+                    </p>
+                `;
+            }
+        }, 5000);
     </script>
 </body>
 </html>
