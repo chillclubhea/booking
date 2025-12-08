@@ -4,14 +4,333 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>關於我們 | 舒壓按摩</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/responsive.css">
+    <meta name="description" content="關於舒壓按摩的專業團隊、服務理念和經營歷史">
+    
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/responsive.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
+    
+    <style>
+        /* 關於頁面專用樣式 */
+        .about-hero {
+            background: linear-gradient(135deg, #FAF8F5 0%, #F5F0E8 100%);
+            padding: 120px 0;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .about-hero h1 {
+            font-size: 3.5rem;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            animation: slideUp 0.8s ease;
+        }
+        
+        .about-hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            animation: slideUp 0.8s ease 0.2s both;
+        }
+        
+        /* 關於內容區塊 */
+        .about-content {
+            padding: 80px 0;
+        }
+        
+        .about-section {
+            margin-bottom: 80px;
+        }
+        
+        .about-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            padding: 50px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .about-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .about-card:hover {
+            box-shadow: var(--shadow-hover);
+            border-color: var(--accent);
+        }
+        
+        .about-card h2 {
+            color: var(--text-primary);
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .about-card h2 i {
+            color: var(--accent);
+        }
+        
+        .about-card p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+        }
+        
+        /* 價值觀網格 */
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .value-item {
+            background: var(--background);
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            transition: var(--transition);
+        }
+        
+        .value-item:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+        }
+        
+        .value-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--hover-bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: var(--accent);
+            font-size: 1.8rem;
+            transition: var(--transition);
+        }
+        
+        .value-item:hover .value-icon {
+            background: var(--accent);
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .value-item h3 {
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        /* 團隊網格 */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+        
+        .team-member {
+            background: var(--background);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+        
+        .team-member:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .member-photo {
+            height: 200px;
+            background: var(--hover-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            font-size: 4rem;
+        }
+        
+        .member-info {
+            padding: 30px;
+        }
+        
+        .member-info h3 {
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        
+        .member-title {
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .member-qualifications {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .member-qualifications span {
+            background: var(--card-bg);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+        
+        .member-expertise {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+        
+        .expertise-tag {
+            background: var(--accent);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+        
+        /* 時間軸 */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 40px auto 0;
+            padding-left: 50px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 25px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border-color);
+        }
+        
+        .timeline-item {
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .timeline-year {
+            position: absolute;
+            left: -50px;
+            top: 0;
+            width: 40px;
+            height: 40px;
+            background: var(--hover-bg);
+            color: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            border: 2px solid var(--accent);
+        }
+        
+        .timeline-content {
+            background: var(--background);
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+        
+        .timeline-content:hover {
+            border-color: var(--accent);
+            transform: translateX(5px);
+        }
+        
+        .timeline-content h3 {
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+        
+        /* 行動呼籲 */
+        .about-cta {
+            text-align: center;
+            padding: 60px 0;
+            background: linear-gradient(135deg, #FAF8F5 0%, #F5F0E8 100%);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .about-cta h2 {
+            color: var(--text-primary);
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .about-cta p {
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 40px;
+            font-size: 1.1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .about-hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .about-card {
+                padding: 30px 20px;
+            }
+            
+            .about-card h2 {
+                font-size: 2rem;
+            }
+            
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .timeline {
+                padding-left: 40px;
+            }
+            
+            .timeline::before {
+                left: 20px;
+            }
+            
+            .timeline-year {
+                left: -40px;
+                width: 35px;
+                height: 35px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <header class="site-header">
         <div class="container header-container">
-            <a href="index.html" class="logo">
+            <a href="./index.html" class="logo">
                 <div class="logo-icon">
                     <i class="fas fa-spa"></i>
                 </div>
@@ -27,70 +346,242 @@
             
             <nav class="main-nav">
                 <ul>
-                    <li><a href="index.html">首頁</a></li>
-                    <li><a href="services.html">服務項目</a></li>
-                    <li><a href="about.html" class="active">關於我們</a></li>
-                    <li><a href="booking.html">線上預約</a></li>
-                    <li><a href="contact.html">聯絡我們</a></li>
+                    <li><a href="./index.html">首頁</a></li>
+                    <li><a href="./services.html">服務項目</a></li>
+                    <li><a href="./about.html" class="active">關於我們</a></li>
+                    <li><a href="./booking.html">線上預約</a></li>
+                    <li><a href="./contact.html">聯絡我們</a></li>
                 </ul>
             </nav>
             
             <div class="header-cta">
-                <a href="booking.html" class="btn">立即預約</a>
+                <a href="./booking.html" class="btn">立即預約</a>
             </div>
         </div>
     </header>
 
-    <div class="container" style="padding: 80px 0;">
-        <h1 style="text-align: center; color: var(--primary-color); margin-bottom: 50px;">關於我們</h1>
-        
-        <div style="max-width: 800px; margin: 0 auto;">
-            <div style="background: white; padding: 40px; border-radius: 10px; box-shadow: var(--shadow); margin-bottom: 40px;">
-                <h2 style="color: var(--primary-color); margin-bottom: 20px;">我們的理念</h2>
-                <p style="margin-bottom: 20px;">成立於2015年，舒壓按摩致力於提供專業、高品質的按摩治療服務。我們相信每個人都應該擁有健康、平衡的身心狀態，而按摩是達到這一目標的重要途徑。</p>
-                <p>我們的使命是透過專業的按摩技術，幫助客戶釋放壓力、緩解疼痛、恢復活力，提升生活品質。</p>
-            </div>
-            
-            <div style="background: white; padding: 40px; border-radius: 10px; box-shadow: var(--shadow);">
-                <h2 style="color: var(--primary-color); margin-bottom: 30px;">專業團隊</h2>
-                
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;">
-                    <div style="text-align: center;">
-                        <div style="background: var(--secondary-color); width: 120px; height: 120px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
-                            <i class="fas fa-user-circle fa-4x" style="color: var(--primary-color);"></i>
-                        </div>
-                        <h3 style="color: var(--primary-color); margin-bottom: 5px;">王曉明</h3>
-                        <p style="color: var(--accent-color); font-weight: 600; margin-bottom: 10px;">資深按摩治療師</p>
-                        <p>10年按摩經驗，專精於深層組織按摩</p>
-                    </div>
+    <section class="about-hero fade-in">
+        <div class="container">
+            <h1>關於我們</h1>
+            <p>我們的理念與專業團隊</p>
+        </div>
+    </section>
+
+    <section class="about-content">
+        <div class="container">
+            <!-- 我們的理念 -->
+            <div class="about-section">
+                <div class="about-card fade-in">
+                    <h2><i class="fas fa-heart"></i> 我們的理念</h2>
+                    <p>成立於2015年，舒壓按摩致力於提供專業、高品質的按摩治療服務。我們相信每個人都應該擁有健康、平衡的身心狀態，而按摩是達到這一目標的重要途徑。</p>
+                    <p>我們的使命是透過專業的按摩技術，幫助客戶釋放壓力、緩解疼痛、恢復活力，提升生活品質。我們堅持使用天然有機的按摩產品，確保每一次療程都是安全、舒適且有效的。</p>
                     
-                    <div style="text-align: center;">
-                        <div style="background: var(--secondary-color); width: 120px; height: 120px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
-                            <i class="fas fa-user-circle fa-4x" style="color: var(--primary-color);"></i>
+                    <div class="values-grid">
+                        <div class="value-item">
+                            <div class="value-icon">
+                                <i class="fas fa-hand-holding-heart"></i>
+                            </div>
+                            <h3>以人為本</h3>
+                            <p>重視每位客戶的獨特需求，提供個性化服務</p>
                         </div>
-                        <h3 style="color: var(--primary-color); margin-bottom: 5px;">李美麗</h3>
-                        <p style="color: var(--accent-color); font-weight: 600; margin-bottom: 10px;">熱石按摩專家</p>
-                        <p>8年經驗，擅長放鬆與壓力管理</p>
+                        
+                        <div class="value-item">
+                            <div class="value-icon">
+                                <i class="fas fa-leaf"></i>
+                            </div>
+                            <h3>天然健康</h3>
+                            <p>堅持使用有機、無添加的按摩產品</p>
+                        </div>
+                        
+                        <div class="value-item">
+                            <div class="value-icon">
+                                <i class="fas fa-award"></i>
+                            </div>
+                            <h3>專業品質</h3>
+                            <p>持續進修最新技術，確保服務品質</p>
+                        </div>
                     </div>
                 </div>
             </div>
+            
+            <!-- 專業團隊 -->
+            <div class="about-section">
+                <div class="about-card fade-in">
+                    <h2><i class="fas fa-users"></i> 專業團隊</h2>
+                    <p class="mb-30">我們的團隊由經驗豐富、專業認證的按摩治療師組成，每位治療師都擁有至少5年以上的實務經驗，並持續接受專業培訓。</p>
+                    
+                    <div class="team-grid">
+                        <div class="team-member">
+                            <div class="member-photo">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                            <div class="member-info">
+                                <h3>王曉明</h3>
+                                <div class="member-title">資深按摩治療師 / 創辦人</div>
+                                <div class="member-qualifications">
+                                    <span>國家按摩治療師證照</span>
+                                    <span>深層組織按摩認證</span>
+                                </div>
+                                <p>擁有超過10年的按摩治療經驗，專精於深層組織按摩和運動按摩。王治療師曾為多位職業運動員提供治療服務。</p>
+                                <div class="member-expertise">
+                                    <span class="expertise-tag">深層組織按摩</span>
+                                    <span class="expertise-tag">運動恢復</span>
+                                    <span class="expertise-tag">慢性疼痛管理</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="team-member">
+                            <div class="member-photo">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                            <div class="member-info">
+                                <h3>李美麗</h3>
+                                <div class="member-title">熱石按摩專家 / 副理</div>
+                                <div class="member-qualifications">
+                                    <span>國際熱石按摩認證</span>
+                                    <span>瑞典式按摩認證</span>
+                                </div>
+                                <p>8年專業按摩經驗，專攻熱石按摩和放鬆按摩。李治療師擅長壓力管理和身心放鬆治療。</p>
+                                <div class="member-expertise">
+                                    <span class="expertise-tag">熱石按摩</span>
+                                    <span class="expertise-tag">壓力管理</span>
+                                    <span class="expertise-tag">身心放鬆</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="team-member">
+                            <div class="member-photo">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                            <div class="member-info">
+                                <h3>陳雅婷</h3>
+                                <div class="member-title">孕婦按摩專家</div>
+                                <div class="member-qualifications">
+                                    <span>孕婦按摩專業認證</span>
+                                    <span>淋巴引流認證</span>
+                                </div>
+                                <p>6年專業經驗，專精於孕婦按摩和產後恢復。陳治療師特別注重安全性和舒適度。</p>
+                                <div class="member-expertise">
+                                    <span class="expertise-tag">孕婦按摩</span>
+                                    <span class="expertise-tag">產後恢復</span>
+                                    <span class="expertise-tag">淋巴引流</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 我們的歷史 -->
+            <div class="about-section">
+                <div class="about-card fade-in">
+                    <h2><i class="fas fa-history"></i> 我們的歷史</h2>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-year">2015</div>
+                            <div class="timeline-content">
+                                <h3>創立舒壓按摩</h3>
+                                <p>在台北市大安區成立第一家店面，專注於提供專業的按摩治療服務。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-year">2017</div>
+                            <div class="timeline-content">
+                                <h3>擴展服務項目</h3>
+                                <p>引進熱石按摩技術，並獲得國際熱石按摩協會認證。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-year">2019</div>
+                            <div class="timeline-content">
+                                <h3>專業團隊擴充</h3>
+                                <p>聘請多位專業認證治療師，擴大服務範圍至孕婦按摩和運動按摩。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-year">2022</div>
+                            <div class="timeline-content">
+                                <h3>全面數位化</h3>
+                                <p>推出線上預約系統，提升客戶預約便利性，並獲得顧客滿意度五星評價。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 行動呼籲 -->
+            <div class="about-section">
+                <div class="about-cta fade-in">
+                    <h2>準備好體驗專業按摩了嗎？</h2>
+                    <p>現在就預約您的第一次體驗，感受專業按摩帶來的改變。</p>
+                    <a href="./booking.html" class="btn btn-large">立即預約體驗</a>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
 
     <footer class="site-footer">
         <div class="container">
             <div class="footer-content">
-                <div class="footer-col">
+                <div class="footer-col fade-in">
                     <h3>舒壓按摩</h3>
-                    <p>專業按摩治療服務。</p>
+                    <p>專業按摩治療服務，幫助您釋放壓力、恢復身心平衡。</p>
+                </div>
+                
+                <div class="footer-col fade-in">
+                    <h3>快速連結</h3>
+                    <ul class="footer-links">
+                        <li><a href="./index.html">首頁</a></li>
+                        <li><a href="./services.html">服務項目</a></li>
+                        <li><a href="./about.html">關於我們</a></li>
+                        <li><a href="./booking.html">線上預約</a></li>
+                        <li><a href="./contact.html">聯絡我們</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col fade-in">
+                    <h3>聯絡資訊</h3>
+                    <div class="contact-info">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <p>台北市大安區安和路一段123號4樓</p>
+                    </div>
+                    
+                    <div class="contact-info">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <p>(02) 1234-5678</p>
+                    </div>
+                    
+                    <div class="contact-info">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <p>info@massage-relax.com</p>
+                    </div>
+                    
+                    <div class="contact-info">
+                        <div class="contact-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <p>營業時間: 每日 10:00 - 22:00</p>
+                    </div>
                 </div>
             </div>
+            
             <div class="copyright">
-                <p>&copy; 2023 舒壓按摩</p>
+                <p>&copy; 2023 舒壓按摩 專業按摩治療服務。保留所有權利。</p>
             </div>
         </div>
     </footer>
 
-    <script src="js/script.js"></script>
+    <script src="./js/script.js"></script>
 </body>
 </html>
