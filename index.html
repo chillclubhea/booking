@@ -987,7 +987,7 @@
                                     <div class="time-label">上午 09:00-10:00</div>
                                     <div class="time-note">適合晨間代謝分析</div>
                                 </div>
-                                <div class="time-option" data-time="14:0015:00">
+                                <div class="time-option" data-time="14:00-15:00">
                                     <div class="time-label">下午 14:00-15:00</div>
                                     <div class="time-note">適合午餐後咨詢</div>
                                 </div>
@@ -1079,7 +1079,7 @@
         // 系統配置
         // ============================================
         const CONFIG = {
-            // EmailJS 配置 - 已修復參數匹配問題
+            // EmailJS 配置 - 根據您的截圖，模板使用 dappointment_id 而不是 appointment_id
             EMAILJS: {
                 PUBLIC_KEY: 't7Qdr66KKPecj63b3',
                 SERVICE_ID: 'service_00tszor',
@@ -1485,13 +1485,16 @@
             return `MET${year}${month}${day}${random}`;
         }
 
-        // 發送確認郵件 - 已修復參數匹配問題
+        // 發送確認郵件 - 根據您的截圖，模板使用 dappointment_id 而不是 appointment_id
         async function sendConfirmationEmail(formData, appointmentId) {
             try {
-                // 準備模板參數 - 確保與EmailJS模板中的變量名稱完全匹配
+                // 準備模板參數 - 根據您的 EmailJS 模板截圖
+                // 模板中使用了 ((dappointment_id)) 而不是 ((appointment_id))
                 const templateParams = {
                     to_name: formData.igName || '客戶',
-                    appointment_id: appointmentId,
+                    to_email: formData.email,      // 收件人郵箱地址
+                    reply_to: formData.email,      // 回覆地址
+                    dappointment_id: appointmentId, // 重要：根據您的截圖，模板使用 dappointment_id
                     appointment_date: formData.preferredDate,
                     appointment_time: selectedTimes.join(', '),
                     contact: `Instagram: ${formData.igName || '未提供'}, 電話: ${formData.phone || '未提供'}`,
@@ -1499,6 +1502,13 @@
                 };
                 
                 console.log('發送郵件參數:', templateParams);
+                
+                // 檢查 EmailJS 配置
+                console.log('使用 EmailJS 配置:', {
+                    serviceId: CONFIG.EMAILJS.SERVICE_ID,
+                    templateId: CONFIG.EMAILJS.TEMPLATE_ID,
+                    publicKey: CONFIG.EMAILJS.PUBLIC_KEY
+                });
                 
                 const response = await emailjs.send(
                     CONFIG.EMAILJS.SERVICE_ID,
@@ -1515,9 +1525,14 @@
                 
             } catch (error) {
                 console.error('郵件發送失敗:', error);
+                console.error('錯誤詳情:', {
+                    status: error.status,
+                    text: error.text,
+                    message: error.message
+                });
                 return { 
                     success: false, 
-                    message: `郵件發送失敗: ${error.message || '未知錯誤'}`,
+                    message: `郵件發送失敗: ${error.text || error.message || '未知錯誤'}`,
                     error: error 
                 };
             }
