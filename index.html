@@ -1,574 +1,1680 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chill Club </title>
-    <meta name="description" content="專業痛症">
-    
-    <!-- CSS -->
-    <link rel="stylesheet" href="./css/style.css">
-    <link rel="stylesheet" href="./css/responsive.css">
-    <link rel="stylesheet" href="https://chillclubhea.github.io/booking/css/style.css">
-    
-    <!-- Font Awesome -->
+    <title>代謝修復專家 - 一對一咨詢預約</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
-    
-    <!-- 預加載樣式 -->
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <!-- 引入圓體字 -->
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <style>
-        .preloader {
+        /* 專業代謝修復專家風格 */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'M PLUS Rounded 1c', 'Microsoft JhengHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0a1931 0%, #1a1a2e 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        /* 背景裝飾 */
+        body::before {
+            content: '';
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: #FAF8F5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(74, 144, 226, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(16, 185, 129, 0.06) 0%, transparent 50%);
+            z-index: -1;
         }
         
-        .preloader.hidden {
-            opacity: 0;
-            pointer-events: none;
+        .form-container {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 24px;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
-        .loader {
-            width: 50px;
-            height: 50px;
-            border: 3px solid #E8E2D9;
-            border-top-color: #E8B4B8;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-    </style>
-</head>
-<body>
-    <!-- 預加載器 -->
-    <div class="preloader" id="preloader">
-        <div class="loader"></div>
-    </div>
-
-    <!-- 導航列 -->
-    <header class="site-header">
-        <div class="container header-container">
-            <a href="./index.html" class="logo">
-                <div class="logo-icon">
-                    <i class="fas fa-spa"></i>
-                </div>
-                <div class="logo-text">
-                    <span class="main">Chill Club</span>
-                    <span class="sub">專業痛症</span>
-                </div>
-            </a>
-            
-            <button class="mobile-menu-btn">
-                <i class="fas fa-bars"></i>
-            </button>
-            
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="./index.html" class="active">首頁</a></li>
-                    <li><a href="./services.html">服務項目</a></li>
-                    <li><a href="./about.html">關於我們</a></li>
-                    <li><a href="./booking.html">線上預約</a></li>
-                    <li><a href="./contact.html">聯絡我們</a></li>
-                </ul>
-            </nav>
-            
-            <div class="header-cta">
-                <a href="./booking.html" class="btn">立即預約</a>
-            </div>
-        </div>
-    </header>
-
-    <!-- 主視覺區 -->
-    <section class="hero fade-in">
-        <div class="container">
-            <h1>專業痛症治療服務</h1>
-            <p>專注解決痛症問題，結合運動復康，為您提供長遠解決方案</p>
-            <a href="./services.html" class="btn btn-large">了解服務項目</a>
-        </div>
-    </section>
-
-    <!-- 特色服務 -->
-    <section class="featured-services">
-        <div class="container">
-            <div class="section-title fade-in">
-                <h2>新客專享優惠</h2>
-                <p>首次體驗優惠價，專為新客戶設計的優質服務方案</p>
-            </div>
-            
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-stethoscope"></i>
-                    </div>
-                    <div class="service-content">
-                        <h3>新客優惠｜60分鐘痛症治療</h3>
-                        <div class="price">HK$ 418</div>
-                        <p class="service-description">專注解決您的痛症問題，提供全面的評估與治療方案</p>
-                        <ul class="service-features">
-                            <li>60分鐘皇牌痛症評估及手法</li>
-                            <li>詳細解釋痛症成因</li>
-                            <li>痛症斷尾思路規劃</li>
-                            <li>客製化痛症手法</li>
-                            <li>運動建議（如適用）</li>
-                            <li>飲食建議（如適用）</li>
-                        </ul>
-                        <div class="service-note">可加選：加購項目</div>
-                        <a href="./booking.html" class="btn btn-outline">立即預約</a>
-                    </div>
-                </div>
-                
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-fire"></i>
-                    </div>
-                    <div class="service-content">
-                        <h3>首次優惠🔥🔥｜30+30分鐘痛症+按摩</h3>
-                        <div class="price">HK$ 458</div>
-                        <p class="service-description">結合痛症治療與放鬆按摩，雙重效果一次滿足</p>
-                        <ul class="service-features">
-                            <li>15分鐘頭肩頸按摩</li>
-                            <li>15分鐘背部按摩</li>
-                            <li>15分鐘筋膜放鬆按摩</li>
-                            <li>15分鐘專業伸展</li>
-                        </ul>
-                        <div class="service-note">可加選：加購項目（非必須）</div>
-                        <a href="./booking.html" class="btn btn-outline">立即預約</a>
-                    </div>
-                </div>
-                
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-hands"></i>
-                    </div>
-                    <div class="service-content">
-                        <h3>新客優惠｜60分鐘全身按摩</h3>
-                        <div class="price">HK$ 388</div>
-                        <p class="service-description">全身放鬆按摩，舒緩疲勞，恢復身心平衡</p>
-                        <ul class="service-features">
-                            <li>20分鐘頭肩頸手按摩</li>
-                            <li>25分鐘上背下腰按摩</li>
-                            <li>15分鐘腿部放鬆</li>
-                        </ul>
-                        <div class="service-note">可加選：加購項目</div>
-                        <a href="./booking.html" class="btn btn-outline">立即預約</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 按摩套餐 -->
-    <section class="features" style="background-color: var(--background);">
-        <div class="container">
-            <div class="section-title fade-in">
-                <h2>按摩套餐方案</h2>
-                <p>多種時長選擇，滿足不同需求的專業按摩服務</p>
-            </div>
-            
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-badge">熱門選擇</div>
-                    <div class="service-icon">
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <div class="service-content">
-                        <h3>PLAN-A1｜60分鐘純按摩</h3>
-                        <div class="price">HK$ 398</div>
-                        <p class="service-description">基礎放鬆按摩，適合日常保養與壓力釋放</p>
-                        <ul class="service-features">
-                            <li>15分鐘頭肩頸按摩</li>
-                            <li>15分鐘背部按摩</li>
-                            <li>15分鐘筋膜放鬆按摩</li>
-                            <li>15分鐘專業伸展</li>
-                        </ul>
-                        <div class="service-note">可加選：加購項目（非必須）</div>
-                        <a href="./booking.html" class="btn btn-outline">立即預約</a>
-                    </div>
-                </div>
-                
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-couch"></i>
-                    </div>
-                    <div class="service-content">
-                        <h3>PLAN-A2｜90分鐘懶人拉筋+中式推拿</h3>
-                        <div class="price">HK$ 588</div>
-                        <p class="service-description">深度放鬆結合中式推拿手法，舒筋活絡</p>
-                        <ul class="service-features">
-                            <li>20分鐘頭肩頸按摩</li>
-                            <li>20分鐘背部按摩</li>
-                            <li>20分鐘腰腹按摩</li>
-                            <li>20分鐘腿部按摩</li>
-                            <li>15分鐘手部按摩</li>
-                        </ul>
-                        <div class="service-note">可加選：加購項目（非必須）</div>
-                        <a href="./booking.html" class="btn btn-outline">立即預約</a>
-                    </div>
-                </div>
-                
-                <div class="service-card">
-                    <div class="service-badge">至尊享受</div>
-                    <div class="service-icon">
-                        <i class="fas fa-crown"></i>
-                    </div>
-                    <div class="service-content">
-                        <h3>PLAN-A3｜105分鐘純按摩</h3>
-                        <div class="price">HK$ 658</div>
-                        <p class="service-description">長時間深度按摩，徹底放鬆每一寸肌肉</p>
-                        <ul class="service-features">
-                            <li>15分鐘頭肩頸按摩</li>
-                            <li>15分鐘背部按摩</li>
-                            <li>15分鐘腰腹按摩</li>
-                            <li>15分鐘腿部按摩</li>
-                            <li>15分鐘手部按摩</li>
-                            <li>15分鐘專業伸展</li>
-                            <li>15分鐘睡眠按摩⭐️</li>
-                        </ul>
-                        <div class="service-note">可加選：加購項目（非必須）</div>
-                        <a href="./booking.html" class="btn btn-outline">立即預約</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 痛症治療套餐 -->
-    <section class="featured-services">
-        <div class="container">
-            <div class="section-title fade-in">
-                <h2>痛症治療方案</h2>
-                <p>專業痛症評估與治療，結合運動復康，長遠解決疼痛問題</p>
-            </div>
-            
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-badge">專業復康</div>
-                    <div class="service-icon">
-                        <i class="fas fa-running"></i>
-                    </div>
-                    <div class="service-content">
-                        <h3>PLAN-B3｜90分鐘純痛症+運動復康</h3>
-                        <div class="price">HK$ 768</div>
-                        <p class="service-description">專業痛症治療結合運動復康訓練</p>
-                        <ul class="service-features">
-                            <li>30分鐘皇牌痛症手法</li>
-                            <li>15分鐘姿勢調整</li>
-                            <li>30分鐘運動復康訓練</li>
-                            <li>痛症評估及後期跟進</li>
-                        </ul>
-                        <div class="service-note">可加選：加購項目（非必須）</div>
-                        <a href="./booking.html" class="btn btn-outline">立即預約</a>
-                    </div>
-                </div>
-                
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-user-check"></i>
-                    </div>
-                    <div class="service-content">
-                        <h3>PLAN-B2｜60分鐘純痛症+運動復康</h3>
-                        <div class="price">HK$ 518 <small>(初體驗優惠 HK$ 418)</small></div>
-                        <p class="service-description">痛症治療基礎方案，適合初次嘗試</p>
-                        <ul class="service-features">
-                            <li>30分鐘皇牌痛症手法</li>
-                            <li>15分鐘姿勢調整</li>
-                            <li>15分鐘運動復康訓練</li>
-                        </ul>
-                        <div class="service-note">可加選：加購項目（非必須）</div>
-                        <a href="./booking.html" class="btn btn-outline">立即預約</a>
-                    </div>
-                </div>
-                
-                <div class="service-card">
-                    <div class="service-badge">頂級套餐</div>
-                    <div class="service-icon">
-                        <i class="fas fa-bed"></i>
-                    </div>
-                    <div class="service-content">
-                        <h3>PLAN-C｜90分鐘頂級套餐</h3>
-                        <h4>頭部睡眠按摩+痛症+按摩</h4>
-                        <div class="price">HK$ 658 <small>(初體驗優惠 HK$ 808)</small></div>
-                        <p class="service-description">全方位治療方案，包含睡眠按摩放鬆</p>
-                        <ul class="service-features">
-                            <li>10分鐘詳細痛症評估</li>
-                            <li>50分鐘皇牌痛症手法</li>
-                            <li>15分鐘筋膜放鬆按摩</li>
-                            <li>15分鐘專業伸展</li>
-                            <li>⭐️15分鐘睡眠按摩⭐️</li>
-                            <li>運動及復康教學</li>
-                        </ul>
-                        <a href="./booking.html" class="btn btn-outline">立即預約</a>
-                    </div>
-                </div>
-                
-                <div class="service-card">
-                    <div class="service-badge">熱門痛症</div>
-                    <div class="service-icon">
-                        <i class="fas fa-heartbeat"></i>
-                    </div>
-                    <div class="service-content">
-                        <h3>PLAN-C4｜90分鐘熱門痛症+按摩</h3>
-                        <div class="price">HK$ 588 <small>(初體驗優惠 HK$ 568)</small></div>
-                        <p class="service-description">痛症治療結合放鬆按摩的完美平衡</p>
-                        <ul class="service-features">
-                            <li>30分鐘皇牌痛症手法</li>
-                            <li>15分鐘頭肩頸按摩</li>
-                            <li>15分鐘背部按摩</li>
-                            <li>15分鐘筋膜放鬆按摩</li>
-                            <li>15分鐘專業伸展</li>
-                            <li>運動及復康教學</li>
-                        </ul>
-                        <div class="service-note">可加選：加購項目（非必須）</div>
-                        <a href="./booking.html" class="btn btn-outline">立即預約</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 特色介紹 -->
-    <section class="features">
-        <div class="container">
-            <div class="section-title fade-in">
-                <h2>為什麼選擇 Chill Club</h2>
-                <p>我們提供的不只是按摩，而是全方位的健康解決方案</p>
-            </div>
-            
-            <div class="features-grid">
-                <div class="feature-item fade-in">
-                    <div class="feature-icon">
-                        <i class="fas fa-award"></i>
-                    </div>
-                    <h3>專業認證</h3>
-                    <p>所有治療師均持有專業痛症治療認證，定期進修最新技術</p>
-                </div>
-                
-                <div class="feature-item fade-in">
-                    <div class="feature-icon">
-                        <i class="fas fa-search"></i>
-                    </div>
-                    <h3>精準評估</h3>
-                    <p>詳細痛症成因分析，提供個性化治療方案</p>
-                </div>
-                
-                <div class="feature-item fade-in">
-                    <div class="feature-icon">
-                        <i class="fas fa-dumbbell"></i>
-                    </div>
-                    <h3>運動復康</h3>
-                    <p>結合運動訓練，從根源解決痛症問題</p>
-                </div>
-                
-                <div class="feature-item fade-in">
-                    <div class="feature-icon">
-                        <i class="fas fa-clock"></i>
-                    </div>
-                    <h3>彈性預約</h3>
-                    <p>營業時間彈性，提供線上預約系統，方便快捷</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 行動呼籲 -->
-    <section class="call-to-action fade-in">
-        <div class="container">
-            <div class="cta-content">
-                <h2>準備好解決您的痛症問題了嗎？</h2>
-                <p>現在就預約您的第一次體驗，感受專業痛症治療帶來的改變。</p>
-                <a href="./booking.html" class="btn btn-large">立即預約體驗</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- 頁尾 -->
-    <footer class="site-footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-col fade-in">
-                    <h3>Chill Club</h3>
-                    <p>專業痛症治療及按摩服務，幫助您解決疼痛、恢復健康。</p>
-                    <a href="./booking.html" class="btn">立即預約</a>
-                </div>
-                
-                <div class="footer-col fade-in">
-                    <h3>快速連結</h3>
-                    <ul class="footer-links">
-                        <li><a href="./index.html">首頁</a></li>
-                        <li><a href="./services.html">服務項目</a></li>
-                        <li><a href="./about.html">關於我們</a></li>
-                        <li><a href="./booking.html">線上預約</a></li>
-                        <li><a href="./contact.html">聯絡我們</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-col fade-in">
-                    <h3>聯絡資訊</h3>
-                    <div class="contact-info">
-                        <div class="contact-icon">
-                            <i class="fas fa-map-marker-alt"></i>
-                        </div>
-                        <p>香港九龍旺角彌敦道123號</p>
-                    </div>
-                    
-                    <div class="contact-info">
-                        <div class="contact-icon">
-                            <i class="fas fa-phone"></i>
-                        </div>
-                        <p>(852) 1234-5678</p>
-                    </div>
-                    
-                    <div class="contact-info">
-                        <div class="contact-icon">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <p>info@chillclub.com</p>
-                    </div>
-                    
-                    <div class="contact-info">
-                        <div class="contact-icon">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        <p>營業時間: 每日 10:00 - 22:00</p>
-                    </div>
-                    
-                    <div class="social-links">
-                        <a href="#" class="floating"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="floating"><i class="fab fa-whatsapp"></i></a>
-                        <a href="#" class="floating"><i class="fab fa-instagram"></i></a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="copyright">
-                <p>&copy; 2023 Chill Club 專業痛症治療服務。保留所有權利。</p>
-                <p>所有價格為港幣 HKD</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- JavaScript -->
-    <script src="./js/script.js"></script>
-    
-    <!-- 預加載器腳本 -->
-    <script>
-        window.addEventListener('load', function() {
-            setTimeout(() => {
-                document.getElementById('preloader').classList.add('hidden');
-            }, 500);
-        });
-    </script>
-    
-    <!-- 額外樣式 -->
-    <style>
-        .call-to-action {
-            padding: 100px 0;
+        .header-section {
+            background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+            padding: 35px 40px;
+            color: white;
             text-align: center;
-            background: linear-gradient(135deg, #FAF8F5 0%, #F5F0E8 100%);
-            border-top: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
         }
         
-        .cta-content h2 {
-            font-size: 2.5rem;
-            color: var(--text-primary);
-            margin-bottom: 20px;
+        .header-section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
         }
         
-        .cta-content p {
-            color: var(--text-secondary);
+        .logo {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            letter-spacing: 1.5px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .sub-logo {
             font-size: 1.2rem;
-            margin-bottom: 40px;
+            font-weight: 500;
+            opacity: 0.9;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header-section h1 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header-section p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .expert-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-top: 15px;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .form-content {
+            padding: 40px;
+            min-height: 500px;
+            position: relative;
+        }
+        
+        .form-step {
+            display: none;
+            animation: slideIn 0.5s ease;
+        }
+        
+        .form-step.active {
+            display: block;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .question-group {
+            margin-bottom: 32px;
+            padding: 25px;
+            background: rgba(249, 250, 251, 0.8);
+            border-radius: 18px;
+            border: 1px solid rgba(229, 231, 235, 0.5);
+            transition: all 0.3s ease;
+        }
+        
+        .question-group:hover {
+            background: white;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+            border-color: rgba(209, 213, 219, 0.8);
+        }
+        
+        .question-group h3 {
+            font-size: 1.3rem;
+            color: #1e40af;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .question-group h3 i {
+            color: #3b82f6;
+        }
+        
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #374151;
+            font-size: 1.05rem;
+        }
+        
+        .required::after {
+            content: " *";
+            color: #ef4444;
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: 14px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: white;
+            color: #374151;
+            font-family: 'M PLUS Rounded 1c', 'Microsoft JhengHei', sans-serif;
+        }
+        
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+        
+        /* 數據網格樣式 */
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .data-grid input {
+            text-align: center;
+            padding: 16px 10px;
+        }
+        
+        .radio-group,
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-top: 15px;
+        }
+        
+        .radio-option,
+        .checkbox-option {
+            width: 100%;
+        }
+        
+        .radio-option input,
+        .checkbox-option input {
+            display: none;
+        }
+        
+        .radio-option label,
+        .checkbox-option label {
+            display: block;
+            padding: 20px;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 14px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            margin-bottom: 0;
+            color: #4b5563;
+        }
+        
+        .radio-option input:checked + label,
+        .checkbox-option input:checked + label {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), white);
+            border-color: #3b82f6;
+            color: #1e40af;
+            font-weight: 600;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.15);
+        }
+        
+        .expert-note {
+            background: linear-gradient(135deg, rgba(167, 243, 208, 0.2), rgba(209, 250, 229, 0.1));
+            border-left: 4px solid #10b981;
+            padding: 18px;
+            border-radius: 12px;
+            margin: 20px 0;
+            font-size: 0.95rem;
+            color: #065f46;
+            line-height: 1.6;
+        }
+        
+        .expert-note strong {
+            color: #047857;
+        }
+        
+        .warning-box {
+            background: linear-gradient(135deg, rgba(254, 243, 199, 0.3), rgba(254, 243, 199, 0.1));
+            border-left: 4px solid #f59e0b;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 25px 0;
+        }
+        
+        .warning-box h4 {
+            color: #92400e;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .warning-box h4 i {
+            color: #f59e0b;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: rgba(229, 231, 235, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, #3b82f6, #0ea5e9);
+            width: 0%;
+            transition: width 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(255, 255, 255, 0.3) 50%, 
+                transparent 100%);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .progress-text {
+            text-align: center;
+            padding: 15px 40px;
+            background: #f8fafc;
+            color: #64748b;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        /* 時間選擇優化 */
+        .time-selection-group {
+            background: white;
+            padding: 25px;
+            border-radius: 18px;
+            border: 2px solid #e2e8f0;
+            margin-top: 20px;
+        }
+        
+        .time-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .time-option {
+            padding: 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .time-option:hover {
+            border-color: #3b82f6;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.1);
+        }
+        
+        .time-option.selected {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), white);
+            border-color: #3b82f6;
+            color: #1e40af;
+            font-weight: 600;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.15);
+        }
+        
+        .time-option .time-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .time-option .time-note {
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+        
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .btn {
+            padding: 16px 36px;
+            border: none;
+            border-radius: 14px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(255, 255, 255, 0.2) 50%, 
+                transparent 100%);
+            transform: translateX(-100%);
+        }
+        
+        .btn:hover::after {
+            animation: btnShimmer 0.8s;
+        }
+        
+        @keyframes btnShimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .btn-prev {
+            background: white;
+            color: #4b5563;
+            border: 2px solid #d1d5db;
+        }
+        
+        .btn-prev:hover {
+            border-color: #9ca3af;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-next,
+        .btn-submit {
+            background: linear-gradient(to right, #3b82f6, #0ea5e9);
+            color: white;
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+        }
+        
+        .btn-next:hover,
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(59, 130, 246, 0.4);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+        
+        /* 確認頁面優化 */
+        .confirmation {
+            text-align: center;
+            padding: 50px 20px;
+        }
+        
+        .confirmation i {
+            font-size: 5rem;
+            color: #10b981;
+            margin-bottom: 25px;
+            animation: scaleIn 0.8s ease;
+        }
+        
+        @keyframes scaleIn {
+            0% { transform: scale(0); opacity: 0; }
+            70% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .confirmation h2 {
+            color: #1e40af;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+        
+        .confirmation p {
+            color: #4b5563;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            line-height: 1.7;
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
         }
         
-        .service-badge {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background-color: var(--accent);
-            color: white;
-            padding: 5px 15px;
+        .appointment-details {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
             border-radius: 20px;
-            font-size: 0.8rem;
+            padding: 35px;
+            margin: 35px auto;
+            max-width: 650px;
+            text-align: left;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.05);
+        }
+        
+        .detail-row {
+            display: flex;
+            margin-bottom: 18px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        
+        .detail-label {
             font-weight: 600;
-        }
-        
-        .service-features {
-            list-style: none;
-            padding: 0;
-            margin: 15px 0;
-        }
-        
-        .service-features li {
-            padding: 5px 0;
-            padding-left: 25px;
-            position: relative;
-            color: var(--text-secondary);
-        }
-        
-        .service-features li:before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: var(--accent);
-            font-weight: bold;
-        }
-        
-        .service-note {
-            background-color: var(--hover-bg);
-            padding: 10px 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            border-left: 3px solid var(--accent);
-        }
-        
-        .service-card h4 {
-            color: var(--text-secondary);
+            width: 180px;
+            color: #1e40af;
             font-size: 1rem;
-            margin: 5px 0 15px;
-            font-weight: 500;
         }
         
-        .service-card small {
-            font-size: 0.9rem;
-            color: var(--accent);
-            font-weight: 500;
+        .detail-value {
+            flex: 1;
+            color: #374151;
+            font-size: 1rem;
         }
         
-        /* 動畫效果 */
-        .hero h1, .hero p, .hero .btn {
-            animation: slideUp 0.8s ease;
+        /* 社群引導模塊 */
+        .community-section {
+            background: linear-gradient(135deg, rgba(240, 249, 255, 0.9) 0%, rgba(224, 242, 254, 0.9) 100%);
+            border-radius: 20px;
+            padding: 35px;
+            margin: 35px auto;
+            max-width: 650px;
+            text-align: center;
+            border: 1px solid rgba(186, 230, 253, 0.8);
+            position: relative;
+            overflow: hidden;
         }
         
-        .hero h1 {
-            animation-delay: 0.2s;
+        .community-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 30%, rgba(56, 189, 248, 0.05) 0%, transparent 50%);
+            z-index: 0;
         }
         
-        .hero p {
-            animation-delay: 0.4s;
+        .community-section h3 {
+            color: #0369a1;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            position: relative;
+            z-index: 1;
         }
         
-        .hero .btn {
-            animation-delay: 0.6s;
+        .community-points {
+            text-align: left;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .community-point {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+        
+        .community-point:hover {
+            background: white;
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .point-icon {
+            font-size: 1.5rem;
+            color: #0ea5e9;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .point-content {
+            flex: 1;
+        }
+        
+        .point-content p {
+            color: #374151;
+            margin: 0;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        
+        .community-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .community-btn {
+            padding: 16px 32px;
+            border-radius: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .community-btn.instagram {
+            background: linear-gradient(to right, #E1306C, #C13584);
+            color: white;
+        }
+        
+        .community-btn.whatsapp {
+            background: linear-gradient(to right, #25D366, #128C7E);
+            color: white;
+        }
+        
+        .community-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* 響應式設計 */
+        @media (max-width: 768px) {
+            .form-container {
+                margin: 10px;
+                border-radius: 20px;
+            }
+            
+            .header-section {
+                padding: 25px 20px;
+            }
+            
+            .form-content {
+                padding: 25px 20px;
+            }
+            
+            .logo {
+                font-size: 2.2rem;
+            }
+            
+            .header-section h1 {
+                font-size: 1.5rem;
+            }
+            
+            .data-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .question-group {
+                padding: 20px;
+            }
+            
+            .time-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn {
+                padding: 14px 25px;
+                font-size: 1rem;
+            }
+            
+            .form-navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .btn-prev,
+            .btn-next {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .detail-row {
+                flex-direction: column;
+            }
+            
+            .detail-label {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+            
+            .community-buttons {
+                flex-direction: column;
+            }
+            
+            .community-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+        
+        /* 專業提示 */
+        .metabolic-tip {
+            background: linear-gradient(135deg, rgba(199, 210, 254, 0.2), rgba(199, 210, 254, 0.1));
+            border-left: 4px solid #4f46e5;
+            padding: 18px;
+            border-radius: 12px;
+            margin: 15px 0;
+            font-size: 0.95rem;
+            color: #3730a3;
+            line-height: 1.6;
+        }
+        
+        .metabolic-tip strong {
+            color: #4f46e5;
         }
     </style>
+</head>
+<body>
+    <div class="form-container">
+        <!-- 進度條 -->
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        
+        <!-- 進度文本 -->
+        <div class="progress-text" id="progressText">
+            <span id="currentStepText">步驟 1/9</span>
+        </div>
+        
+        <!-- 表頭 -->
+        <div class="header-section">
+            <div class="logo">METABOLIC LAB</div>
+            <div class="sub-logo">數據化代謝修復</div>
+            <h1>一對一代謝修復專家咨詢預約</h1>
+            <p>由數據化減重專家為您破解代謝停滯期，提供基於科學證據的個性化解決方案</p>
+            <div class="expert-badge">
+                <i class="fas fa-chart-line"></i> 專注代謝修復 • 數據驅動結果
+            </div>
+        </div>
+        
+        <!-- 表單內容 -->
+        <div class="form-content">
+            <form id="consultationForm">
+                <!-- 步驟 1: 介紹與同意 -->
+                <div class="form-step active" id="step1">
+                    <div class="question-group">
+                        <h3><i class="fas fa-exclamation-circle"></i> 重要事項說明</h3>
+                        <p>此咨詢將由代謝修復專家為您分析代謝數據，破解您在減重/體態改善過程中遇到的停滯期問題。</p>
+                        <p>接下來我們會問幾個關鍵問題，請認真填寫，以便我們為會議做好充分的數據準備。</p>
+                        
+                        <div class="warning-box">
+                            <h4><i class="fas fa-clock"></i> 請注意</h4>
+                            <p>為了確保時間能聚焦在真正希望獲得數據化解決方案的人身上，這個咨詢不適用於：</p>
+                            <ul style="margin-left: 20px; margin-top: 10px;">
+                                <li>單純想詢問通用減重方法的人</li>
+                                <li>暫時沒有行動計劃和執行意願的人</li>
+                                <li>僅尋求免費建議而不考慮專業服務的人</li>
+                            </ul>
+                            <p style="margin-top: 15px;">會議當日，請空出60分鐘並在安靜、不被打擾的環境中進行會議。若無故未出席，將取消往後免費會議資格。</p>
+                        </div>
+                        
+                        <p><strong>請確認您已瞭解以上事項：</strong></p>
+                        
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="understandYes" name="understand" value="我瞭解並同意" required>
+                                <label for="understandYes">我瞭解並同意上述所有事項</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="understandNo" name="understand" value="我不瞭解">
+                                <label for="understandNo">我不瞭解或不同意部分事項</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 步驟 2: 基本聯繫資料 -->
+                <div class="form-step" id="step2">
+                    <div class="question-group">
+                        <h3><i class="fas fa-user-circle"></i> 您的聯繫信息</h3>
+                        
+                        <label for="igName" class="required">Instagram 用戶名</label>
+                        <input type="text" id="igName" name="igName" placeholder="請填寫您的Instagram用戶名" required>
+                        <div class="metabolic-tip">
+                            <strong>專業提示：</strong> 我們將通過Instagram分享代謝小知識和成功案例，請確保用戶名正確。
+                        </div>
+                        
+                        <label for="email" class="required">電子郵箱</label>
+                        <input type="email" id="email" name="email" placeholder="請填寫您的常用電子郵箱" required>
+                        
+                        <label for="phone" class="required">聯絡電話</label>
+                        <input type="text" id="phone" name="phone" placeholder="請填寫您的聯絡電話" required>
+                    </div>
+                </div>
+                
+                <!-- 步驟 3: 年齡確認 -->
+                <div class="form-step" id="step3">
+                    <div class="question-group">
+                        <h3><i class="fas fa-birthday-cake"></i> 年齡確認</h3>
+                        <label class="required">您是否已年滿23歲？</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="ageYes" name="age" value="是，已滿23歲" required>
+                                <label for="ageYes">是，我已滿23歲</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="ageNo" name="age" value="否，未滿23歲" required>
+                                <label for="ageNo">否，我未滿23歲</label>
+                            </div>
+                        </div>
+                        <div class="expert-note">
+                            <strong>為什麼需要年齡信息？</strong> 代謝率與年齡密切相關，瞭解年齡有助於我們為您提供更精准的代謝修復建議。
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 步驟 4: 代謝數據收集 -->
+                <div class="form-step" id="step4">
+                    <div class="question-group">
+                        <h3><i class="fas fa-chart-bar"></i> 代謝評估基礎數據</h3>
+                        <label class="required">請提供以下數據，以便進行初步代謝評估</label>
+                        <div class="data-grid">
+                            <input type="text" id="gender" name="gender" placeholder="性別（男/女）" required>
+                            <input type="number" id="age" name="age" placeholder="年齡" min="18" max="80" required>
+                            <input type="number" id="height" name="height" placeholder="身高 (cm)" min="100" max="250" required>
+                            <input type="number" id="weight" name="weight" step="0.1" placeholder="體重 (kg)" min="30" max="200" required>
+                            <input type="number" id="waist" name="waist" step="0.1" placeholder="腰圍 (cm)" required>
+                        </div>
+                        <div class="expert-note">
+                            <strong>為什麼需要腰圍數據？</strong> 腰圍是評估內臟脂肪與代謝健康的關鍵指標，對於制定精准的代謝修復方案至關重要。
+                        </div>
+                        
+                        <label for="occupation" class="required">職業/日常活動水平</label>
+                        <input type="text" id="occupation" name="occupation" placeholder="例如：辦公室久坐族/醫護人員輪班/教師/健身教練" required>
+                    </div>
+                </div>
+                
+                <!-- 步驟 5: 代謝問題分析 -->
+                <div class="form-step" id="step5">
+                    <div class="question-group">
+                        <h3><i class="fas fa-stethoscope"></i> 代謝問題診斷</h3>
+                        
+                        <label for="problem" class="required">Q1: 您目前的減重/體態改善正處於哪個階段？是否遇到了停滯期（體重/尺寸超過4周無變化）？請具體描述。</label>
+                        <textarea id="problem" name="problem" rows="4" placeholder="請詳細描述您目前所處的階段、遇到的停滯期情況，以及持續時間..." required></textarea>
+                        
+                        <label for="attempts" class="required">Q2: 為了突破現狀，您已經嘗試過哪些方法？（例如：生酮、168斷食、高強度運動、代餐等）效果如何？請簡述。</label>
+                        <textarea id="attempts" name="attempts" rows="4" placeholder="請列出您嘗試過的方法、持續時間以及具體效果..." required></textarea>
+                    </div>
+                    
+                    <div class="metabolic-tip">
+                        <strong>專業分析：</strong> 瞭解您已嘗試的方法有助於我們分析您的代謝適應性，避免重復無效策略，找到真正的代謝瓶頸。
+                    </div>
+                </div>
+                
+                <!-- 步驟 6: 飲食與生活習慣 -->
+                <div class="form-step" id="step6">
+                    <div class="question-group">
+                        <h3><i class="fas fa-utensils"></i> 當前飲食與生活習慣</h3>
+                        
+                        <label for="diet" class="required">請簡述您目前的全日飲食結構與時間</label>
+                        <textarea id="diet" name="diet" rows="4" placeholder="例如：早餐：不吃/ 午餐：外食便當，飯半碗/ 晚餐：家裡煮，一碗飯，青菜，雞胸肉/ 宵夜：偶爾吃水果" required></textarea>
+                        
+                        <label class="required">您的主要飲食偏好？（可多選）</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="pref1" name="dietPref" value="外食為主">
+                                <label for="pref1">外食為主（餐廳/外賣）</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="pref2" name="dietPref" value="自己烹飪">
+                                <label for="pref2">自己烹飪（可控制食材）</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="pref3" name="dietPref" value="手搖飲/甜點">
+                                <label for="pref3">每周3次以上手搖飲/甜點</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="pref4" name="dietPref" value="宵夜習慣">
+                                <label for="pref4">有吃宵夜的習慣</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="pref5" name="dietPref" value="飲食不規律">
+                                <label for="pref5">飲食時間不規律</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 步驟 7: 動機與投資意願 -->
+                <div class="form-step" id="step7">
+                    <div class="question-group">
+                        <h3><i class="fas fa-bullseye"></i> 目標與承諾評估</h3>
+                        
+                        <label for="goal" class="required">您的具體目標是什麼？</label>
+                        <textarea id="goal" name="goal" rows="3" placeholder="例如：3個月內減重5kg、腰圍減少8cm、學會自主規劃代謝修復飲食..." required></textarea>
+                        
+                        <label class="required">您對達成目標的決心如何？</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="commit1" name="commitment" value="非常堅定" required>
+                                <label for="commit1">『非常堅定』我願意為達成目標做出必要改變</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="commit2" name="commitment" value="願意嘗試" required>
+                                <label for="commit2">『願意嘗試』如果方法合適，我會認真執行</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="commit3" name="commitment" value="需要觀望" required>
+                                <label for="commit3">『需要觀望』想先瞭解方案，再決定是否執行</label>
+                            </div>
+                        </div>
+                        
+                        <div class="question-group" style="margin-top: 30px; background: rgba(254, 226, 226, 0.1);">
+                            <label class="required">為了獲得數據化代謝修復方案與持續指導，如果能拿到結果，您是否願意投資超過HKD$10,000？（可分期）</label>
+                            <div class="radio-group">
+                                <div class="radio-option">
+                                    <input type="radio" id="invest1" name="investment" value="願意投資" required>
+                                    <label for="invest1">HKD$10,000對我可行，我真心想解決代謝問題！</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="invest2" name="investment" value="可能投資" required>
+                                    <label for="invest2">可能有點壓力，但如果方案真的有效，我會考慮投資</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="invest3" name="investment" value="無法投資" required>
+                                    <label for="invest3">目前無法承擔這個預算</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 步驟 8: 時間意向與補充信息 -->
+                <div class="form-step" id="step8">
+                    <div class="question-group">
+                        <h3><i class="fas fa-calendar-alt"></i> 預約時間意向</h3>
+                        <p>提交您的首選時間意向，我們的代謝修復顧問將在24小時內與您確認最終會議時間。</p>
+                        
+                        <div class="time-selection-group">
+                            <label for="preferredDate" class="required">首選咨詢日期</label>
+                            <input type="date" id="preferredDate" name="preferredDate" required>
+                            
+                            <label class="required" style="margin-top: 25px;">首選時間段（請選擇1-2個）</label>
+                            <div class="time-options">
+                                <div class="time-option" data-time="09:00-10:00">
+                                    <div class="time-label">上午 09:00-10:00</div>
+                                    <div class="time-note">適合晨間代謝分析</div>
+                                </div>
+                                <div class="time-option" data-time="14:00-15:00">
+                                    <div class="time-label">下午 14:00-15:00</div>
+                                    <div class="time-note">適合午餐後咨詢</div>
+                                </div>
+                                <div class="time-option" data-time="19:00-20:00">
+                                    <div class="time-label">晚上 19:00-20:00</div>
+                                    <div class="time-note">適合下班後深度咨詢</div>
+                                </div>
+                                <div class="time-option" data-time="20:30-21:30">
+                                    <div class="time-label">晚上 20:30-21:30</div>
+                                    <div class="time-note">適合晚間放鬆時段</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <label for="additionalInfo" style="margin-top: 30px;">任何其他想讓我們知道的代謝相關信息</label>
+                        <textarea id="additionalInfo" name="additionalInfo" rows="4" placeholder="例如：特殊健康狀況、用藥情況、過往體檢數據、家族代謝病史等..."></textarea>
+                    </div>
+                </div>
+                
+                <!-- 步驟 9: 確認與提交 -->
+                <div class="form-step" id="step9">
+                    <div class="confirmation">
+                        <i class="fas fa-check-circle"></i>
+                        <h2>預約申請已提交成功！</h2>
+                        <p>我們已收到您的代謝修復咨詢申請，確認信已發送到您的電子郵箱</p>
+                        
+                        <div class="appointment-details" id="appointmentDetails">
+                            <!-- 預約詳情將由JavaScript動態生成 -->
+                        </div>
+                        
+                        <p><strong>下一步：</strong> 我們的代謝修復專家將在24小時內通過Instagram或電話與您確認最終會議時間及會議鏈接。</p>
+                        <p>請務必留意您的郵件和Instagram消息，並準時參加咨詢會議。</p>
+                        
+                        <!-- 社群引導模塊 -->
+                        <div class="community-section">
+                            <h3>在等待會議期間，您可以：</h3>
+                            <div class="community-points">
+                                <div class="community-point">
+                                    <div class="point-icon">📱</div>
+                                    <div class="point-content">
+                                        <p><strong>關注我們的 Instagram</strong> - 獲取每日代謝小知識、成功案例分享與科學減重資訊</p>
+                                    </div>
+                                </div>
+                                <div class="community-point">
+                                    <div class="point-icon">💬</div>
+                                    <div class="point-content">
+                                        <p><strong>加入 WhatsApp 代謝修復社群</strong> - 與同期學員交流經驗，獲取社群專屬支持與問答</p>
+                                    </div>
+                                </div>
+                                <div class="community-point">
+                                    <div class="point-icon">📊</div>
+                                    <div class="point-content">
+                                        <p><strong>記錄您的三日飲食</strong> - 為咨詢會議準備，記錄您連續三天的飲食情況（食物、時間、份量）</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="community-buttons">
+                                <a href="https://instagram.com/您的Instagram賬號" class="community-btn instagram" target="_blank">
+                                    <i class="fab fa-instagram"></i> 前往 Instagram
+                                </a>
+                                <a href="https://wa.me/您的電話號碼" class="community-btn whatsapp" target="_blank">
+                                    <i class="fab fa-whatsapp"></i> 加入 WhatsApp 社群
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <button type="button" class="btn btn-submit" onclick="window.location.reload()">
+                            <i class="fas fa-plus-circle"></i> 建立新的咨詢預約
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 導航按鈕 -->
+                <div class="form-navigation" id="formNavigation">
+                    <button type="button" class="btn btn-prev" id="prevBtn">
+                        <i class="fas fa-arrow-left"></i> 上一步
+                    </button>
+                    <button type="button" class="btn btn-next" id="nextBtn">
+                        下一步 <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // 系統配置
+        // ============================================
+        const CONFIG = {
+            // EmailJS 配置
+            EMAILJS: {
+                PUBLIC_KEY: 't7Qdr66KKPecj63b3',
+                SERVICE_ID: 'service_00tszor',
+                TEMPLATE_ID: 'template_sa6vpqu'
+            },
+            // Google Sheets Web App URL (用於數據備份)
+            GOOGLE_SHEETS_URL: 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec',
+            // 社群鏈接
+            SOCIAL: {
+                INSTAGRAM: 'https://instagram.com/您的Instagram賬號',
+                WHATSAPP: 'https://wa.me/您的電話號碼'
+            }
+        };
+
+        // 初始化 EmailJS
+        (function() {
+            emailjs.init(CONFIG.EMAILJS.PUBLIC_KEY);
+            console.log('EmailJS 初始化完成');
+        })();
+
+        // ============================================
+        // 全局變量與狀態管理
+        // ============================================
+        let currentStep = 1;
+        const totalSteps = 9;
+        let selectedTimes = [];
+        let formData = {
+            timePreferences: []
+        };
+        
+        // 步驟標題映射
+        const stepTitles = [
+            "歡迎與確認",
+            "聯繫信息",
+            "年齡確認", 
+            "代謝數據",
+            "問題診斷",
+            "飲食分析",
+            "目標承諾",
+            "時間意向",
+            "完成"
+        ];
+
+        // ============================================
+        // DOM 加載與初始化
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化組件
+            initDatePicker();
+            initTimeSelection();
+            updateProgress();
+            updateNavigation();
+            
+            // 設置事件監聽器
+            setupEventListeners();
+            
+            // 初始化表單驗證提示
+            initValidation();
+        });
+
+        // ============================================
+        // 核心功能函數
+        // ============================================
+
+        // 初始化日期選擇器
+        function initDatePicker() {
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const formattedDate = tomorrow.toISOString().split('T')[0];
+            document.getElementById('preferredDate').min = formattedDate;
+            
+            // 設置默認值為3天後
+            const defaultDate = new Date();
+            defaultDate.setDate(defaultDate.getDate() + 3);
+            const defaultFormattedDate = defaultDate.toISOString().split('T')[0];
+            document.getElementById('preferredDate').value = defaultFormattedDate;
+        }
+
+        // 初始化時間選擇
+        function initTimeSelection() {
+            const timeOptions = document.querySelectorAll('.time-option');
+            timeOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const time = this.dataset.time;
+                    
+                    if (this.classList.contains('selected')) {
+                        // 取消選擇
+                        this.classList.remove('selected');
+                        const index = selectedTimes.indexOf(time);
+                        if (index > -1) {
+                            selectedTimes.splice(index, 1);
+                        }
+                    } else {
+                        // 選擇（最多2個）
+                        if (selectedTimes.length < 2) {
+                            this.classList.add('selected');
+                            selectedTimes.push(time);
+                        } else {
+                            alert('最多只能選擇2個時間段');
+                        }
+                    }
+                    
+                    // 更新表單數據
+                    formData.timePreferences = [...selectedTimes];
+                });
+            });
+        }
+
+        // 初始化表單驗證
+        function initValidation() {
+            // 為所有必填字段添加視覺提示
+            const requiredFields = document.querySelectorAll('[required]');
+            requiredFields.forEach(field => {
+                field.addEventListener('blur', function() {
+                    if (!this.value.trim()) {
+                        this.style.borderColor = '#ef4444';
+                    } else {
+                        this.style.borderColor = '#e5e7eb';
+                    }
+                });
+            });
+        }
+
+        // 設置事件監聽器
+        function setupEventListeners() {
+            // 下一步按鈕
+            document.getElementById('nextBtn').addEventListener('click', function() {
+                if (validateCurrentStep()) {
+                    if (currentStep === totalSteps - 1) {
+                        handleFormSubmit();
+                    } else {
+                        goToStep(currentStep + 1);
+                    }
+                }
+            });
+            
+            // 上一步按鈕
+            document.getElementById('prevBtn').addEventListener('click', function() {
+                if (currentStep > 1) {
+                    goToStep(currentStep - 1);
+                }
+            });
+            
+            // 投資意願變更監聽
+            document.querySelectorAll('input[name="investment"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.value === '無法投資') {
+                        showDisqualificationMessage();
+                    }
+                });
+            });
+        }
+
+        // 顯示不符合資格信息
+        function showDisqualificationMessage() {
+            const message = `
+                <div style="background: #fee2e2; border-left: 4px solid #dc2626; padding: 20px; border-radius: 12px; margin: 20px 0;">
+                    <h4 style="color: #991b1b; margin-bottom: 10px;">重要提示</h4>
+                    <p>由於咨詢需求眾多，我們目前優先服務有預算投入代謝修復計劃的學員。</p>
+                    <p>您可以：</p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>關注我們的 Instagram 獲取免費代謝知識</li>
+                        <li>加入 WhatsApp 社群瞭解其他學員的進展</li>
+                        <li>當您的預算狀況改變時，重新提交申請</li>
+                    </ul>
+                </div>
+            `;
+            
+            // 在投資選項後插入提示
+            const investmentGroup = document.querySelector('input[name="investment"]:checked')?.closest('.radio-option');
+            if (investmentGroup) {
+                investmentGroup.insertAdjacentHTML('afterend', message);
+            }
+        }
+
+        // 切換步驟
+        function goToStep(step) {
+            // 隱藏當前步驟
+            document.querySelectorAll('.form-step').forEach(stepEl => {
+                stepEl.classList.remove('active');
+            });
+            
+            // 顯示目標步驟
+            document.getElementById(`step${step}`).classList.add('active');
+            
+            // 更新當前步驟
+            currentStep = step;
+            
+            // 更新UI
+            updateProgress();
+            updateNavigation();
+            
+            // 滾動到頂部
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // 更新步驟文本
+            updateStepText();
+        }
+
+        // 更新進度
+        function updateProgress() {
+            const progress = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            document.getElementById('progressFill').style.width = `${progress}%`;
+        }
+
+        // 更新步驟文本
+        function updateStepText() {
+            const stepText = `步驟 ${currentStep}/${totalSteps}: ${stepTitles[currentStep - 1] || ''}`;
+            document.getElementById('currentStepText').textContent = stepText;
+        }
+
+        // 更新導航按鈕
+        function updateNavigation() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            prevBtn.style.display = currentStep === 1 ? 'none' : 'flex';
+            
+            if (currentStep === totalSteps) {
+                document.getElementById('formNavigation').style.display = 'none';
+            } else {
+                document.getElementById('formNavigation').style.display = 'flex';
+                
+                if (currentStep === totalSteps - 1) {
+                    nextBtn.innerHTML = '提交申請 <i class="fas fa-paper-plane"></i>';
+                } else {
+                    nextBtn.innerHTML = '下一步 <i class="fas fa-arrow-right"></i>';
+                }
+                
+                // 如果是步驟8且未選擇時間，禁用下一步按鈕
+                if (currentStep === 8 && selectedTimes.length === 0) {
+                    nextBtn.disabled = true;
+                } else {
+                    nextBtn.disabled = false;
+                }
+            }
+        }
+
+        // 驗證當前步驟
+        function validateCurrentStep() {
+            const currentStepEl = document.getElementById(`step${currentStep}`);
+            const requiredFields = currentStepEl.querySelectorAll('[required]');
+            
+            for (let field of requiredFields) {
+                if (field.type === 'radio') {
+                    const name = field.name;
+                    const checked = currentStepEl.querySelector(`input[name="${name}"]:checked`);
+                    if (!checked) {
+                        showValidationError(`請選擇「${field.labels[0]?.textContent || field.name}」`);
+                        return false;
+                    }
+                } else if (field.type === 'checkbox') {
+                    const name = field.name;
+                    const checked = currentStepEl.querySelector(`input[name="${name}"]:checked`);
+                    if (!checked) {
+                        showValidationError(`請至少選擇一個「${field.labels[0]?.textContent || field.name}」`);
+                        return false;
+                    }
+                } else {
+                    if (!field.value.trim()) {
+                        showValidationError(`請填寫「${field.labels[0]?.textContent || field.name}」`);
+                        return false;
+                    }
+                }
+            }
+            
+            // 特殊驗證：步驟8需要選擇至少一個時間段
+            if (currentStep === 8 && selectedTimes.length === 0) {
+                showValidationError('請至少選擇一個首選時間段');
+                return false;
+            }
+            
+            return true;
+        }
+
+        // 顯示驗證錯誤
+        function showValidationError(message) {
+            // 創建錯誤提示元素
+            const errorEl = document.createElement('div');
+            errorEl.className = 'validation-error';
+            errorEl.style.cssText = `
+                background: #fee2e2;
+                color: #991b1b;
+                padding: 15px;
+                border-radius: 10px;
+                margin: 15px 0;
+                border-left: 4px solid #dc2626;
+                animation: fadeIn 0.3s ease;
+            `;
+            errorEl.innerHTML = `<strong><i class="fas fa-exclamation-circle"></i> 請完善信息：</strong> ${message}`;
+            
+            // 插入到表單導航前
+            const nav = document.getElementById('formNavigation');
+            nav.parentNode.insertBefore(errorEl, nav);
+            
+            // 3秒後移除
+            setTimeout(() => {
+                errorEl.style.opacity = '0';
+                errorEl.style.transform = 'translateY(-10px)';
+                setTimeout(() => errorEl.remove(), 300);
+            }, 3000);
+            
+            // 滾動到錯誤位置
+            errorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // 收集表單數據
+        function collectFormData() {
+            // 收集復選框值
+            const dietPreferences = Array.from(document.querySelectorAll('input[name="dietPref"]:checked')).map(cb => cb.value);
+            
+            return {
+                // 聯繫信息
+                igName: document.getElementById('igName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                
+                // 基本資料
+                age: document.querySelector('input[name="age"]:checked')?.value,
+                
+                // 代謝數據
+                gender: document.getElementById('gender').value,
+                ageNum: document.getElementById('age').value,
+                height: document.getElementById('height').value,
+                weight: document.getElementById('weight').value,
+                waist: document.getElementById('waist').value,
+                occupation: document.getElementById('occupation').value,
+                
+                // 代謝問題
+                problem: document.getElementById('problem').value,
+                attempts: document.getElementById('attempts').value,
+                
+                // 飲食分析
+                diet: document.getElementById('diet').value,
+                dietPreferences: dietPreferences,
+                
+                // 目標與承諾
+                goal: document.getElementById('goal').value,
+                commitment: document.querySelector('input[name="commitment"]:checked')?.value,
+                investment: document.querySelector('input[name="investment"]:checked')?.value,
+                
+                // 時間意向
+                preferredDate: document.getElementById('preferredDate').value,
+                timePreferences: selectedTimes,
+                additionalInfo: document.getElementById('additionalInfo').value,
+                
+                // 同意事項
+                understand: document.querySelector('input[name="understand"]:checked')?.value,
+                
+                // 時間戳
+                submissionTime: new Date().toISOString()
+            };
+        }
+
+        // 生成預約ID
+        function generateAppointmentId() {
+            const date = new Date();
+            const year = date.getFullYear().toString().slice(-2);
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const day = date.getDate().toString().padStart(2, '0');
+            const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+            
+            return `MET${year}${month}${day}${random}`;
+        }
+
+        // 備份數據到Google Sheets
+        async function backupToGoogleSheets(formData, appointmentId) {
+            // 如果沒有配置Google Sheets URL，跳過
+            if (!CONFIG.GOOGLE_SHEETS_URL || CONFIG.GOOGLE_SHEETS_URL.includes('YOUR_SCRIPT_ID')) {
+                console.log('Google Sheets 備份未配置');
+                return { success: false, message: '備份未配置' };
+            }
+            
+            try {
+                const dataToSubmit = {
+                    appointmentId: appointmentId,
+                    timestamp: new Date().toISOString(),
+                    ...formData
+                };
+                
+                // 發送數據到Google Apps Script Web App
+                const response = await fetch(CONFIG.GOOGLE_SHEETS_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // Google Apps Script需要no-cors模式
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(dataToSubmit)
+                });
+                
+                console.log('數據已提交到Google Sheets');
+                return { success: true, message: '數據備份成功' };
+                
+            } catch (error) {
+                console.error('Google Sheets 備份失敗:', error);
+                return { 
+                    success: false, 
+                    message: `數據備份失敗: ${error.message}` 
+                };
+            }
+        }
+
+        // 發送確認郵件
+        async function sendConfirmationEmail(formData, appointmentId) {
+            try {
+                // 準備模板參數
+                const templateParams = {
+                    to_name: formData.igName || '客戶',
+                    to_email: formData.email,
+                    appointment_id: appointmentId,
+                    preferred_date: formData.preferredDate,
+                    preferred_times: selectedTimes.join(', '),
+                    contact_info: `Instagram: ${formData.igName}, 電話: ${formData.phone}`,
+                    metabolic_data: `性別: ${formData.gender}, 年齡: ${formData.ageNum}, 身高: ${formData.height}cm, 體重: ${formData.weight}kg, 腰圍: ${formData.waist}cm`,
+                    main_goal: formData.goal || '未提供',
+                    current_year: new Date().getFullYear().toString()
+                };
+                
+                console.log('發送郵件參數:', templateParams);
+                
+                const response = await emailjs.send(
+                    CONFIG.EMAILJS.SERVICE_ID,
+                    CONFIG.EMAILJS.TEMPLATE_ID,
+                    templateParams
+                );
+                
+                console.log('郵件發送成功:', response);
+                return { 
+                    success: true, 
+                    message: '確認郵件已發送',
+                    emailResponse: response 
+                };
+                
+            } catch (error) {
+                console.error('郵件發送失敗:', error);
+                return { 
+                    success: false, 
+                    message: `郵件發送失敗: ${error.message || '未知錯誤'}`,
+                    error: error 
+                };
+            }
+        }
+
+        // 保存到本地存儲
+        function saveToLocalStorage(formData, appointmentId, emailSent, backupSent) {
+            const appointments = JSON.parse(localStorage.getItem('metabolic_appointments')) || [];
+            
+            const appointment = {
+                id: appointmentId,
+                timestamp: new Date().toISOString(),
+                ...formData,
+                emailSent: emailSent,
+                backupSent: backupSent,
+                status: 'pending_confirmation',
+                version: '2.0'
+            };
+            
+            appointments.push(appointment);
+            localStorage.setItem('metabolic_appointments', JSON.stringify(appointments));
+            
+            console.log('預約已保存到本地存儲:', appointment);
+            return appointment;
+        }
+
+        // 顯示成功信息
+        function showSuccessMessage(formData, appointmentId, emailResult, backupResult) {
+            // 格式化日期
+            const date = new Date(formData.preferredDate);
+            const formattedDate = date.toLocaleDateString('zh-TW', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                weekday: 'long'
+            });
+            
+            const detailsHTML = `
+                <div class="detail-row">
+                    <div class="detail-label">預約編號</div>
+                    <div class="detail-value"><strong>${appointmentId}</strong></div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">您的稱呼</div>
+                    <div class="detail-value">${formData.igName || '未提供'}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">聯繫郵箱</div>
+                    <div class="detail-value">${formData.email}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">首選日期</div>
+                    <div class="detail-value">${formattedDate}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">首選時間</div>
+                    <div class="detail-value">${selectedTimes.join(', ') || '未選擇'}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">主要目標</div>
+                    <div class="detail-value">${formData.goal ? formData.goal.substring(0, 50) + (formData.goal.length > 50 ? '...' : '') : '未提供'}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">代謝決心</div>
+                    <div class="detail-value">${formData.commitment || '未提供'}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">郵件狀態</div>
+                    <div class="detail-value">
+                        ${emailResult.success ? 
+                            '<span style="color: #10b981;"><i class="fas fa-check-circle"></i> 確認郵件已發送</span>' : 
+                            '<span style="color: #ef4444;"><i class="fas fa-exclamation-triangle"></i> 郵件發送失敗</span>'}
+                    </div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">數據備份</div>
+                    <div class="detail-value">
+                        ${backupResult.success || backupResult.message === '備份未配置' ? 
+                            '<span style="color: #10b981;"><i class="fas fa-check-circle"></i> 數據已安全保存</span>' : 
+                            '<span style="color: #f59e0b;"><i class="fas fa-exclamation-circle"></i> 備份未完成</span>'}
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('appointmentDetails').innerHTML = detailsHTML;
+        }
+
+        // 處理表單提交
+        async function handleFormSubmit() {
+            // 收集表單數據
+            const collectedData = collectFormData();
+            const appointmentId = generateAppointmentId();
+            
+            // 顯示加載狀態
+            const submitBtn = document.getElementById('nextBtn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 提交中...';
+            submitBtn.disabled = true;
+            
+            try {
+                // 1. 發送確認郵件
+                const emailResult = await sendConfirmationEmail(collectedData, appointmentId);
+                
+                // 2. 備份數據到Google Sheets
+                const backupResult = await backupToGoogleSheets(collectedData, appointmentId);
+                
+                // 3. 保存到本地存儲
+                const savedAppointment = saveToLocalStorage(collectedData, appointmentId, emailResult.success, backupResult.success);
+                
+                // 4. 顯示成功信息
+                showSuccessMessage(collectedData, appointmentId, emailResult, backupResult);
+                
+                // 5. 跳轉到成功頁面
+                goToStep(totalSteps);
+                
+                // 6. 更新社群鏈接
+                updateSocialLinks();
+                
+            } catch (error) {
+                console.error('提交失敗:', error);
+                
+                // 顯示錯誤信息
+                const errorEl = document.createElement('div');
+                errorEl.style.cssText = `
+                    background: #fee2e2;
+                    color: #991b1b;
+                    padding: 20px;
+                    border-radius: 12px;
+                    margin: 20px 0;
+                    border-left: 4px solid #dc2626;
+                    text-align: center;
+                `;
+                errorEl.innerHTML = `
+                    <h4 style="margin-bottom: 10px;"><i class="fas fa-exclamation-triangle"></i> 提交過程中發生錯誤</h4>
+                    <p>請稍後再試，或直接通過 Instagram 與我們聯繫。</p>
+                    <button onclick="window.location.reload()" style="
+                        background: #dc2626;
+                        color: white;
+                        border: none;
+                        padding: 10px 20px;
+                        border-radius: 8px;
+                        margin-top: 10px;
+                        cursor: pointer;
+                    ">
+                        重新嘗試
+                    </button>
+                `;
+                
+                const nav = document.getElementById('formNavigation');
+                nav.parentNode.insertBefore(errorEl, nav);
+                
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        }
+
+        // 更新社群鏈接
+        function updateSocialLinks() {
+            // 更新Instagram鏈接
+            const instagramBtn = document.querySelector('.community-btn.instagram');
+            if (instagramBtn && CONFIG.SOCIAL.INSTAGRAM) {
+                instagramBtn.href = CONFIG.SOCIAL.INSTAGRAM;
+            }
+            
+            // 更新WhatsApp鏈接
+            const whatsappBtn = document.querySelector('.community-btn.whatsapp');
+            if (whatsappBtn && CONFIG.SOCIAL.WHATSAPP) {
+                whatsappBtn.href = CONFIG.SOCIAL.WHATSAPP;
+            }
+        }
+
+        // 初始化社交鏈接
+        updateSocialLinks();
+    </script>
 </body>
 </html>
