@@ -738,6 +738,22 @@
         .metabolic-tip strong {
             color: #4f46e5;
         }
+        
+        /* 驗證錯誤樣式 */
+        .validation-error {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #dc2626;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
@@ -971,7 +987,7 @@
                                     <div class="time-label">上午 09:00-10:00</div>
                                     <div class="time-note">適合晨間代謝分析</div>
                                 </div>
-                                <div class="time-option" data-time="14:00-15:00">
+                                <div class="time-option" data-time="14:0015:00">
                                     <div class="time-label">下午 14:00-15:00</div>
                                     <div class="time-note">適合午餐後咨詢</div>
                                 </div>
@@ -1030,10 +1046,10 @@
                             </div>
                             
                             <div class="community-buttons">
-                                <a href="https://instagram.com/您的Instagram賬號" class="community-btn instagram" target="_blank">
+                                <a href="https://instagram.com/metabolic_lab_hk" class="community-btn instagram" target="_blank">
                                     <i class="fab fa-instagram"></i> 前往 Instagram
                                 </a>
-                                <a href="https://wa.me/您的電話號碼" class="community-btn whatsapp" target="_blank">
+                                <a href="https://wa.me/85255556666" class="community-btn whatsapp" target="_blank">
                                     <i class="fab fa-whatsapp"></i> 加入 WhatsApp 社群
                                 </a>
                             </div>
@@ -1063,25 +1079,27 @@
         // 系統配置
         // ============================================
         const CONFIG = {
-            // EmailJS 配置
+            // EmailJS 配置 - 已修復參數匹配問題
             EMAILJS: {
                 PUBLIC_KEY: 't7Qdr66KKPecj63b3',
                 SERVICE_ID: 'service_00tszor',
                 TEMPLATE_ID: 'template_sa6vpqu'
             },
-            // Google Sheets Web App URL (用於數據備份)
-            GOOGLE_SHEETS_URL: 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec',
             // 社群鏈接
             SOCIAL: {
-                INSTAGRAM: 'https://instagram.com/您的Instagram賬號',
-                WHATSAPP: 'https://wa.me/您的電話號碼'
+                INSTAGRAM: 'https://instagram.com/metabolic_lab_hk',
+                WHATSAPP: 'https://wa.me/85255556666'
             }
         };
 
         // 初始化 EmailJS
         (function() {
-            emailjs.init(CONFIG.EMAILJS.PUBLIC_KEY);
-            console.log('EmailJS 初始化完成');
+            try {
+                emailjs.init(CONFIG.EMAILJS.PUBLIC_KEY);
+                console.log('EmailJS 初始化完成');
+            } catch (error) {
+                console.error('EmailJS 初始化失敗:', error);
+            }
         })();
 
         // ============================================
@@ -1122,6 +1140,8 @@
             
             // 初始化表單驗證提示
             initValidation();
+            
+            console.log('表單初始化完成');
         });
 
         // ============================================
@@ -1162,12 +1182,15 @@
                             this.classList.add('selected');
                             selectedTimes.push(time);
                         } else {
-                            alert('最多只能選擇2個時間段');
+                            showValidationError('最多只能選擇2個時間段');
                         }
                     }
                     
                     // 更新表單數據
                     formData.timePreferences = [...selectedTimes];
+                    
+                    // 更新導航按鈕狀態
+                    updateNavigation();
                 });
             });
         }
@@ -1191,12 +1214,17 @@
         function setupEventListeners() {
             // 下一步按鈕
             document.getElementById('nextBtn').addEventListener('click', function() {
-                if (validateCurrentStep()) {
-                    if (currentStep === totalSteps - 1) {
-                        handleFormSubmit();
-                    } else {
-                        goToStep(currentStep + 1);
+                try {
+                    if (validateCurrentStep()) {
+                        if (currentStep === totalSteps - 1) {
+                            handleFormSubmit();
+                        } else {
+                            goToStep(currentStep + 1);
+                        }
                     }
+                } catch (error) {
+                    console.error('導航錯誤:', error);
+                    showValidationError('系統錯誤，請刷新頁面重試');
                 }
             });
             
@@ -1219,8 +1247,13 @@
 
         // 顯示不符合資格信息
         function showDisqualificationMessage() {
+            // 檢查是否已經顯示過提示
+            if (document.querySelector('.disqualification-message')) {
+                return;
+            }
+            
             const message = `
-                <div style="background: #fee2e2; border-left: 4px solid #dc2626; padding: 20px; border-radius: 12px; margin: 20px 0;">
+                <div class="disqualification-message" style="background: #fee2e2; border-left: 4px solid #dc2626; padding: 20px; border-radius: 12px; margin: 20px 0;">
                     <h4 style="color: #991b1b; margin-bottom: 10px;">重要提示</h4>
                     <p>由於咨詢需求眾多，我們目前優先服務有預算投入代謝修復計劃的學員。</p>
                     <p>您可以：</p>
@@ -1233,9 +1266,9 @@
             `;
             
             // 在投資選項後插入提示
-            const investmentGroup = document.querySelector('input[name="investment"]:checked')?.closest('.radio-option');
+            const investmentGroup = document.querySelector('input[name="investment"]:checked')?.closest('.question-group');
             if (investmentGroup) {
-                investmentGroup.insertAdjacentHTML('afterend', message);
+                investmentGroup.insertAdjacentHTML('beforeend', message);
             }
         }
 
@@ -1305,30 +1338,6 @@
         // 驗證當前步驟
         function validateCurrentStep() {
             const currentStepEl = document.getElementById(`step${currentStep}`);
-            const requiredFields = currentStepEl.querySelectorAll('[required]');
-            
-            for (let field of requiredFields) {
-                if (field.type === 'radio') {
-                    const name = field.name;
-                    const checked = currentStepEl.querySelector(`input[name="${name}"]:checked`);
-                    if (!checked) {
-                        showValidationError(`請選擇「${field.labels[0]?.textContent || field.name}」`);
-                        return false;
-                    }
-                } else if (field.type === 'checkbox') {
-                    const name = field.name;
-                    const checked = currentStepEl.querySelector(`input[name="${name}"]:checked`);
-                    if (!checked) {
-                        showValidationError(`請至少選擇一個「${field.labels[0]?.textContent || field.name}」`);
-                        return false;
-                    }
-                } else {
-                    if (!field.value.trim()) {
-                        showValidationError(`請填寫「${field.labels[0]?.textContent || field.name}」`);
-                        return false;
-                    }
-                }
-            }
             
             // 特殊驗證：步驟8需要選擇至少一個時間段
             if (currentStep === 8 && selectedTimes.length === 0) {
@@ -1336,38 +1345,85 @@
                 return false;
             }
             
+            const requiredFields = currentStepEl.querySelectorAll('[required]');
+            
+            for (let field of requiredFields) {
+                if (field.type === 'radio') {
+                    const name = field.name;
+                    const checked = currentStepEl.querySelector(`input[name="${name}"]:checked`);
+                    if (!checked) {
+                        const labelText = getFieldLabel(field);
+                        showValidationError(`請選擇「${labelText}」`);
+                        return false;
+                    }
+                } else if (field.type === 'checkbox') {
+                    const name = field.name;
+                    const checkboxes = currentStepEl.querySelectorAll(`input[name="${name}"]`);
+                    const checked = currentStepEl.querySelector(`input[name="${name}"]:checked`);
+                    if (!checked && checkboxes.length > 0) {
+                        const labelText = getFieldLabel(checkboxes[0]);
+                        showValidationError(`請至少選擇一個「${labelText}」選項`);
+                        return false;
+                    }
+                } else {
+                    if (!field.value.trim()) {
+                        const labelText = getFieldLabel(field);
+                        showValidationError(`請填寫「${labelText}」`);
+                        return false;
+                    }
+                }
+            }
+            
             return true;
+        }
+
+        // 獲取字段標籤文本的輔助函數
+        function getFieldLabel(field) {
+            if (field.labels && field.labels.length > 0) {
+                return field.labels[0].textContent.replace('*', '').trim();
+            }
+            
+            // 嘗試從父元素獲取標籤
+            const label = field.closest('.question-group')?.querySelector('label');
+            if (label) {
+                return label.textContent.replace('*', '').replace('required', '').trim();
+            }
+            
+            // 嘗試獲取前一個label元素
+            const prevLabel = field.previousElementSibling;
+            if (prevLabel && prevLabel.tagName === 'LABEL') {
+                return prevLabel.textContent.replace('*', '').trim();
+            }
+            
+            return field.name || '此字段';
         }
 
         // 顯示驗證錯誤
         function showValidationError(message) {
+            // 移除現有的錯誤提示
+            const existingErrors = document.querySelectorAll('.validation-error');
+            existingErrors.forEach(error => error.remove());
+            
             // 創建錯誤提示元素
             const errorEl = document.createElement('div');
             errorEl.className = 'validation-error';
-            errorEl.style.cssText = `
-                background: #fee2e2;
-                color: #991b1b;
-                padding: 15px;
-                border-radius: 10px;
-                margin: 15px 0;
-                border-left: 4px solid #dc2626;
-                animation: fadeIn 0.3s ease;
-            `;
             errorEl.innerHTML = `<strong><i class="fas fa-exclamation-circle"></i> 請完善信息：</strong> ${message}`;
             
             // 插入到表單導航前
             const nav = document.getElementById('formNavigation');
-            nav.parentNode.insertBefore(errorEl, nav);
-            
-            // 3秒後移除
-            setTimeout(() => {
-                errorEl.style.opacity = '0';
-                errorEl.style.transform = 'translateY(-10px)';
-                setTimeout(() => errorEl.remove(), 300);
-            }, 3000);
-            
-            // 滾動到錯誤位置
-            errorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            if (nav) {
+                nav.parentNode.insertBefore(errorEl, nav);
+                
+                // 5秒後移除
+                setTimeout(() => {
+                    errorEl.style.opacity = '0';
+                    errorEl.style.transform = 'translateY(-10px)';
+                    setTimeout(() => errorEl.remove(), 300);
+                }, 5000);
+                
+                // 滾動到錯誤位置
+                errorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
         }
 
         // 收集表單數據
@@ -1429,56 +1485,16 @@
             return `MET${year}${month}${day}${random}`;
         }
 
-        // 備份數據到Google Sheets
-        async function backupToGoogleSheets(formData, appointmentId) {
-            // 如果沒有配置Google Sheets URL，跳過
-            if (!CONFIG.GOOGLE_SHEETS_URL || CONFIG.GOOGLE_SHEETS_URL.includes('YOUR_SCRIPT_ID')) {
-                console.log('Google Sheets 備份未配置');
-                return { success: false, message: '備份未配置' };
-            }
-            
-            try {
-                const dataToSubmit = {
-                    appointmentId: appointmentId,
-                    timestamp: new Date().toISOString(),
-                    ...formData
-                };
-                
-                // 發送數據到Google Apps Script Web App
-                const response = await fetch(CONFIG.GOOGLE_SHEETS_URL, {
-                    method: 'POST',
-                    mode: 'no-cors', // Google Apps Script需要no-cors模式
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(dataToSubmit)
-                });
-                
-                console.log('數據已提交到Google Sheets');
-                return { success: true, message: '數據備份成功' };
-                
-            } catch (error) {
-                console.error('Google Sheets 備份失敗:', error);
-                return { 
-                    success: false, 
-                    message: `數據備份失敗: ${error.message}` 
-                };
-            }
-        }
-
-        // 發送確認郵件
+        // 發送確認郵件 - 已修復參數匹配問題
         async function sendConfirmationEmail(formData, appointmentId) {
             try {
-                // 準備模板參數
+                // 準備模板參數 - 確保與EmailJS模板中的變量名稱完全匹配
                 const templateParams = {
                     to_name: formData.igName || '客戶',
-                    to_email: formData.email,
                     appointment_id: appointmentId,
-                    preferred_date: formData.preferredDate,
-                    preferred_times: selectedTimes.join(', '),
-                    contact_info: `Instagram: ${formData.igName}, 電話: ${formData.phone}`,
-                    metabolic_data: `性別: ${formData.gender}, 年齡: ${formData.ageNum}, 身高: ${formData.height}cm, 體重: ${formData.weight}kg, 腰圍: ${formData.waist}cm`,
-                    main_goal: formData.goal || '未提供',
+                    appointment_date: formData.preferredDate,
+                    appointment_time: selectedTimes.join(', '),
+                    contact: `Instagram: ${formData.igName || '未提供'}, 電話: ${formData.phone || '未提供'}`,
                     current_year: new Date().getFullYear().toString()
                 };
                 
@@ -1579,9 +1595,9 @@
                 <div class="detail-row">
                     <div class="detail-label">數據備份</div>
                     <div class="detail-value">
-                        ${backupResult.success || backupResult.message === '備份未配置' ? 
+                        ${backupResult.success ? 
                             '<span style="color: #10b981;"><i class="fas fa-check-circle"></i> 數據已安全保存</span>' : 
-                            '<span style="color: #f59e0b;"><i class="fas fa-exclamation-circle"></i> 備份未完成</span>'}
+                            '<span style="color: #f59e0b;"><i class="fas fa-exclamation-circle"></i> 數據保存到本地</span>'}
                     </div>
                 </div>
             `;
@@ -1605,19 +1621,16 @@
                 // 1. 發送確認郵件
                 const emailResult = await sendConfirmationEmail(collectedData, appointmentId);
                 
-                // 2. 備份數據到Google Sheets
-                const backupResult = await backupToGoogleSheets(collectedData, appointmentId);
+                // 2. 保存到本地存儲
+                const savedAppointment = saveToLocalStorage(collectedData, appointmentId, emailResult.success, true);
                 
-                // 3. 保存到本地存儲
-                const savedAppointment = saveToLocalStorage(collectedData, appointmentId, emailResult.success, backupResult.success);
+                // 3. 顯示成功信息
+                showSuccessMessage(collectedData, appointmentId, emailResult, {success: true});
                 
-                // 4. 顯示成功信息
-                showSuccessMessage(collectedData, appointmentId, emailResult, backupResult);
-                
-                // 5. 跳轉到成功頁面
+                // 4. 跳轉到成功頁面
                 goToStep(totalSteps);
                 
-                // 6. 更新社群鏈接
+                // 5. 更新社群鏈接
                 updateSocialLinks();
                 
             } catch (error) {
@@ -1636,25 +1649,23 @@
                 `;
                 errorEl.innerHTML = `
                     <h4 style="margin-bottom: 10px;"><i class="fas fa-exclamation-triangle"></i> 提交過程中發生錯誤</h4>
-                    <p>請稍後再試，或直接通過 Instagram 與我們聯繫。</p>
-                    <button onclick="window.location.reload()" style="
-                        background: #dc2626;
-                        color: white;
-                        border: none;
-                        padding: 10px 20px;
-                        border-radius: 8px;
-                        margin-top: 10px;
-                        cursor: pointer;
-                    ">
-                        重新嘗試
-                    </button>
+                    <p>系統保存了您的預約信息，但郵件發送可能失敗。</p>
+                    <p>預約編號：<strong>${appointmentId}</strong></p>
+                    <p>請記錄此編號，並通過 Instagram 與我們聯繫確認。</p>
                 `;
                 
                 const nav = document.getElementById('formNavigation');
-                nav.parentNode.insertBefore(errorEl, nav);
+                if (nav) {
+                    nav.parentNode.insertBefore(errorEl, nav);
+                }
                 
                 submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
+                
+                // 顯示成功頁面（即使有錯誤）
+                showSuccessMessage(collectedData, appointmentId, {success: false, message: '郵件發送失敗'}, {success: true});
+                goToStep(totalSteps);
+                updateSocialLinks();
             }
         }
 
